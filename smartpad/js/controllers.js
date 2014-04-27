@@ -19,7 +19,7 @@ smartpadControllers.controller('LoginCtrl', ['$scope', '$routeParams', 'User', '
 
 		user.$acc({}, function(data, headers)
                 {
-					if (/*data.success*/ true) {
+					if (data.success) {
 						$location.path('/defaults')
 						return;
 					}
