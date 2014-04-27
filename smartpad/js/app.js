@@ -19,6 +19,10 @@ smartpadApp.config(['$routeProvider',
         templateUrl: 'partials/registry.html',
         controller: 'RegistryCtrl'
       }).
+	  when('/defaults', {
+        templateUrl: 'partials/welcome.html',
+        controller: 'MainAppCtrl'
+      }).
       otherwise({
         redirectTo: '/login'
       });

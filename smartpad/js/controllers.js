@@ -3,19 +3,41 @@
 /* Controllers */
 
 var smartpadControllers = angular.module('smartpadControllers', []);
+/*smartpadControllers.config(function($httpProvider) {
+	console.log($httpProvider.defaults);
+	delete $httpProvider.defaults.headers.common['X-Requested-With'];	
+});*/
 
-smartpadControllers.controller('LoginCtrl', ['$scope', '$routeParams', 'User',
-  function($scope, $routeParams, User) {
+smartpadControllers.controller('LoginCtrl', ['$scope', '$routeParams', 'User', '$location',
+  function($scope, $routeParams, User, $location) {
     
     $scope.login = function() {
-	  console.log($routeParams)
-	  $scope.user = User.get({userId: $scope.userNameText, passwordId: $scope.passwordText}, function(user) {
-		alert("user " + user);
-	  });
+		var user = new User();
+		user.userNameText = $scope.user.userNameText;
+		user.passwordText = $scope.user.passwordText;
+		user.data = $scope.user;
+
+		user.$acc({}, function(data, headers)
+                {
+					if (/*data.success*/ true) {
+						$location.path('/defaults')
+						return;
+					}
+                   alert('Account invalid: ' + data.data[0]);
+                },
+                function(err, headers)
+                {
+                    alert('Login failed: \'' + err + '\'!');
+                });
+
     }
   }]);
-
+smartpadControllers.controller('MainAppCtrl', ['$scope', '$routeParams',
+  function($scope, $routeParams) {
+    // TODO
+	alert("accessed to main app");
+  }]);
 smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User',
-  function($scope, $routeParams, Phone) {
+  function($scope, $routeParams, User) {
     // TODO
   }]);
