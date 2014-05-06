@@ -8,8 +8,8 @@ var smartpadControllers = angular.module('smartpadControllers', []);
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];	
 });*/
 
-smartpadControllers.controller('LoginCtrl', ['$scope', '$routeParams', 'User', '$location',
-  function($scope, $routeParams, User, $location) {
+smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParams', 'User', '$location',
+  function($scope, $rootScope, $routeParams, User, $location) {
     
     $scope.login = function() {
 		var user = new User();
@@ -20,6 +20,7 @@ smartpadControllers.controller('LoginCtrl', ['$scope', '$routeParams', 'User', '
 		user.$acc({}, function(data, headers)
                 {
 					if (data.success) {
+						$rootScope.user = data.data[0];
 						$location.path('/defaults')
 						return;
 					}
@@ -29,15 +30,18 @@ smartpadControllers.controller('LoginCtrl', ['$scope', '$routeParams', 'User', '
                 {
                     alert('Login failed: \'' + err + '\'!');
                 });
-
     }
   }]);
-smartpadControllers.controller('MainAppCtrl', ['$scope', '$routeParams',
-  function($scope, $routeParams) {
+smartpadControllers.controller('MainAppCtrl', ['$scope', '$rootScope', '$routeParams',
+  function($scope, $rootScope, $routeParams) {
     // TODO
-	alert("accessed to main app");
+	alert("accessed to main app " + $rootScope.user);
   }]);
 smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User',
   function($scope, $routeParams, User) {
+    // TODO
+  }]);
+smartpadControllers.controller('CatalogCtrl', ['$scope', '$routeParams', 'Catalog',
+  function($scope, $routeParams, Catalog) {
     // TODO
   }]);
