@@ -2,8 +2,7 @@
 
 /* Services */
 
-var userServices = angular.module('userServices', ['ngResource']);
- 
+var userServices = angular.module('userServices', ['ngResource']); 
 userServices.factory('User', ['$resource',
   function($resource){
     return $resource('http://localhost:8090/acc', null,
@@ -13,4 +12,10 @@ userServices.factory('User', ['$resource',
 						'Content-Type': 'application/json'
 					}}}
 	)
+}]);
+
+var catalogServices = angular.module('catalogServices', ['ngResource']);
+catalogServices.factory('Catalog', ['$resource',
+  function($resource){
+    return $resource('http://localhost:8090/catalog/get-all-catalog?userName=:userName', null)
 }]);

@@ -21,7 +21,7 @@ smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParam
                 {
 					if (data.success) {
 						$rootScope.user = data.data[0];
-						$location.path('/defaults')
+						$location.path('/defaults');
 						return;
 					}
                    alert('Account invalid: ' + data.data[0]);
@@ -32,16 +32,23 @@ smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParam
                 });
     }
   }]);
-smartpadControllers.controller('MainAppCtrl', ['$scope', '$rootScope', '$routeParams',
-  function($scope, $rootScope, $routeParams) {    
+smartpadControllers.controller('MainAppCtrl', ['$scope', '$rootScope', '$routeParams', '$location',
+  function($scope, $rootScope, $routeParams, $location) {    
 	$scope.user = $rootScope.user;	
 	// TODO
+	$scope.catalog = function() {
+		$location.path('/catalog');
+	}
   }]);
 smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User',
   function($scope, $routeParams, User) {
     // TODO
   }]);
 smartpadControllers.controller('CatalogCtrl', ['$scope', '$routeParams', 'Catalog',
-  function($scope, $routeParams, Catalog) {
+  function($scope, $rootScope, $routeParams, Catalog) {
     // TODO
+	Catalog.get({userName:$rootScope.user.userNameText}, function() {
+		alert('loaded')
+	});
+	
   }]);
