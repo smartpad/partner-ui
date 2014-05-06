@@ -33,9 +33,9 @@ smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParam
     }
   }]);
 smartpadControllers.controller('MainAppCtrl', ['$scope', '$rootScope', '$routeParams',
-  function($scope, $rootScope, $routeParams) {
-    // TODO
-	alert("accessed to main app " + $rootScope.user);
+  function($scope, $rootScope, $routeParams) {    
+	$scope.user = $rootScope.user;	
+	// TODO
   }]);
 smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User',
   function($scope, $routeParams, User) {
