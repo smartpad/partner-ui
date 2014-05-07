@@ -11,11 +11,11 @@ userServices.factory('User', ['$resource',
 						headers: {
 						'Content-Type': 'application/json'
 					}}}
-	)
+	);
 }]);
 
 var catalogServices = angular.module('catalogServices', ['ngResource']);
 catalogServices.factory('Catalog', ['$resource',
   function($resource){
-    return $resource('http://localhost:8090/catalog/get-all-catalog?userName=:userName', null)
+    return $resource('http://localhost:8090/catalog/get-all-catalog?userName=:userName', null);
 }]);

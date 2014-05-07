@@ -10,8 +10,9 @@ var smartpadControllers = angular.module('smartpadControllers', []);
 
 smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParams', 'User', '$location',
   function($scope, $rootScope, $routeParams, User, $location) {
-    
-    $scope.login = function() {
+    $scope.user = {};
+	$rootScope.user = {};
+    $scope.login = function() {		
 		var user = new User();
 		user.userNameText = $scope.user.userNameText;
 		user.passwordText = $scope.user.passwordText;
@@ -34,21 +35,17 @@ smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParam
   }]);
 smartpadControllers.controller('MainAppCtrl', ['$scope', '$rootScope', '$routeParams', '$location',
   function($scope, $rootScope, $routeParams, $location) {    
-	$scope.user = $rootScope.user;	
-	// TODO
-	$scope.catalog = function() {
-		$location.path('/catalog');
-	}
+	// TODO	
   }]);
 smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User',
   function($scope, $routeParams, User) {
     // TODO
   }]);
-smartpadControllers.controller('CatalogCtrl', ['$scope', '$routeParams', 'Catalog',
-  function($scope, $rootScope, $routeParams, Catalog) {
-    // TODO
-	Catalog.get({userName:$rootScope.user.userNameText}, function() {
-		alert('loaded')
+smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog',
+  function($scope, $rootScope, Catalog) {
+    
+	Catalog.get({userName: $rootScope.user.userNameText}, function(catalog) {
+		console.log(catalog)
+		alert('loaded catalog')
 	});
-	
   }]);
