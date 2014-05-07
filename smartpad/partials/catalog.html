@@ -1,1 +1,17 @@
-catalog of user {{user.userNameText}}
+<b>Catalog of user {{user.userNameText}}</b>
+<br><br>
+<span ng-click="loadSubCatalog(rootCatalog)"><href>Parent catalog</href></span>
+<br><br>
+ALl sub-catalogs
+<br>
+<li ng-repeat="subCatalog in catalog.allSubCatalogs">
+  <span ng-click="loadSubCatalog(subCatalog)"><href>{{subCatalog.name}}</href></span>
+</li>
+<br>
+-------------
+<br>
+All catalog item
+<br>
+<li ng-repeat="catalogItem in catalog.allItems">
+  <span>{{catalogItem.valuesSingle.name}}</span>
+</li>

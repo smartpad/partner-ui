@@ -44,8 +44,19 @@ smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User'
 smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog',
   function($scope, $rootScope, Catalog) {
     
-	Catalog.get({userName: $rootScope.user.userNameText}, function(catalog) {
-		console.log(catalog)
-		alert('loaded catalog')
+	Catalog.get({userName: $rootScope.user.userNameText}, function(catalog) {		
+		$scope.rootCatalog = catalog.data[0].catalog;
+		$scope.rootCatalog.name = "Catalog";
+		$scope.rootCatalog.root = true;
+		angular.forEach($scope.rootCatalog.allSubCatalogs, function(currCatalog, keyAsIndex) {
+		   //this.push(key + ': ' + value);
+		   currCatalog.index = keyAsIndex;
+		 });
+		//$scope.catalog = $scope.rootCatalog.allSubCatalogs[0];
+		$scope.catalog = $scope.rootCatalog;
 	});
+	
+	$scope.loadSubCatalog = function(catalog) {				
+		$scope.catalog = catalog;
+	}
   }]);
