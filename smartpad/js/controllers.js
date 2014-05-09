@@ -49,14 +49,30 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 		$scope.rootCatalog.name = "Catalog";
 		$scope.rootCatalog.root = true;
 		angular.forEach($scope.rootCatalog.allSubCatalogs, function(currCatalog, keyAsIndex) {
-		   //this.push(key + ': ' + value);
 		   currCatalog.index = keyAsIndex;
 		 });
-		//$scope.catalog = $scope.rootCatalog.allSubCatalogs[0];
 		$scope.catalog = $scope.rootCatalog;
+		$scope.selectedCatalogToAddSubCat = $scope.rootCatalog;//{id: null, name: "", des: "", checkedToAddSubCat: false};
 	});
 	
 	$scope.loadSubCatalog = function(catalog) {
 		$scope.catalog = catalog;
-	}
+	};
+	
+	$scope.changedSelectCatalogToAddSubCat = function(catalog) {
+		//catalog.checkedToAddSubCat = !catalog.checkedToAddSubCat;
+		//if (catalog.checkedToAddSubCat) {
+		$scope.selectedCatalogToAddSubCat = catalog;
+		//}
+	};
+	
+	$scope.updateCatalog = function() {
+		// TODO with selectedCatalogToAddSubCat
+	};
+	$scope.addSubCatalog = function() {
+		// TODO with selectedCatalogToAddSubCat
+	};
+	$scope.clearForm = function() {
+		// TODO with selectedCatalogToAddSubCat
+	};
   }]);

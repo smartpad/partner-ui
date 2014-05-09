@@ -1,17 +1,30 @@
-<b>Catalog of user {{user.userNameText}}</b>
-<br><br>
-<span ng-click="loadSubCatalog(rootCatalog)"><href>Parent catalog</href></span>
-<br><br>
-ALl sub-catalogs
+<div>  
+	<b>Catalog of user {{user.userNameText}}</b>
+	<br><br>
+	<span ng-click="loadSubCatalog(rootCatalog)"><href>Parent catalog</href></span>
+	<br><br>
+	ALl sub-catalogs
+	<br>
+	<li ng-repeat="subCatalog in catalog.allSubCatalogs">
+		<span>
+			
+			<href  ng-click="loadSubCatalog(subCatalog)">{{subCatalog.name}}</href>
+			<input class="btn-primary" ng-click="changedSelectCatalogToAddSubCat(subCatalog)" type="button" value="Add sub cat"> <input class="btn-primary" type="button" value="Update">
+		</span>
+	</li>
+	<br>
+</div>
 <br>
-<li ng-repeat="subCatalog in catalog.allSubCatalogs">
-  <span ng-click="loadSubCatalog(subCatalog)"><href>{{subCatalog.name}}</href></span>
-</li>
-<br>
--------------
-<br>
-All catalog item
-<br>
-<li ng-repeat="catalogItem in catalog.allItems">
-  <span>{{catalogItem.valuesSingle.name}}</span>
-</li>
+<div>
+	Parent catalog to addSubCat/edit {{selectedCatalogToAddSubCat.name}}
+	<br>
+	<form>
+		<input type="text" ng-model="catName"  size="30"
+			   placeholder="add cat name here">
+		<br>
+		<input type="text" ng-model="catDes"  size="100"
+			   placeholder="add cat des here">
+		<input class="btn-primary" type="button" value="Update" ng-click="addSubCatalog()">
+		<input class="btn-primary" type="button" value="Clear" ng-click="clearForm()">
+	</form>
+</div>
