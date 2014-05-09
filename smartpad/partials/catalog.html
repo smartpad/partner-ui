@@ -9,21 +9,28 @@
 		<span>
 			
 			<href  ng-click="loadSubCatalog(subCatalog)">{{subCatalog.name}}</href>
-			<input class="btn-primary" ng-click="changedSelectCatalogToAddSubCat(subCatalog)" type="button" value="Add sub cat"> <input class="btn-primary" type="button" value="Update">
+			<input class="btn-primary" ng-click="changedSelectCatalogToAddSubCat(subCatalog, null)" type="button" value="Add sub cat">
+			<input class="btn-primary" ng-click="changedSelectCatalogToAddSubCat(null, subCatalog)" type="button" value="Update">
 		</span>
 	</li>
 	<br>
 </div>
 <br>
 <div>
-	Parent catalog to addSubCat/edit {{selectedCatalogToAddSubCat.name}}
+	<div ng-if="selectedCatalogToAddSubCat != null">
+		Parent catalog to addSubCat {{selectedCatalogToAddSubCat.name}}
+	</div>
+	<div ng-if="catToEdit != null">
+		Catalog to edit {{catToEdit.name}}
+	</div>
+	
 	<br>
 	<form>
 		<input type="text" ng-model="catName"  size="30"
-			   placeholder="add cat name here">
+			   placeholder="add cat name here" ng-readonly="readonly" >
 		<br>
 		<input type="text" ng-model="catDes"  size="100"
-			   placeholder="add cat des here">
+			   placeholder="add cat des here" ng-readonly="readonly" >
 		<input class="btn-primary" type="button" value="Update" ng-click="addSubCatalog()">
 		<input class="btn-primary" type="button" value="Clear" ng-click="clearForm()">
 	</form>

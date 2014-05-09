@@ -52,18 +52,36 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 		   currCatalog.index = keyAsIndex;
 		 });
 		$scope.catalog = $scope.rootCatalog;
-		$scope.selectedCatalogToAddSubCat = $scope.rootCatalog;//{id: null, name: "", des: "", checkedToAddSubCat: false};
+		$scope.selectedCatalogToAddSubCat = null;//$scope.rootCatalog;//{id: null, name: "", des: "", checkedToAddSubCat: false};
+		$scope.catToEdit = null;
+		$scope.catName = null;
+		$scope.catDes = null;
+		$scope.readonly = true;
+		//$scope.$clearForm();
 	});
 	
 	$scope.loadSubCatalog = function(catalog) {
 		$scope.catalog = catalog;
+		this.clearForm();
 	};
 	
-	$scope.changedSelectCatalogToAddSubCat = function(catalog) {
-		//catalog.checkedToAddSubCat = !catalog.checkedToAddSubCat;
-		//if (catalog.checkedToAddSubCat) {
-		$scope.selectedCatalogToAddSubCat = catalog;
-		//}
+	$scope.changedSelectCatalogToAddSubCat = function(parentCatalogOfNewSubCat, catToEdit) {
+		if (catToEdit) {
+			if (catToEdit.id == $scope.rootCatalog.id) {
+				// TODO handle select rootCatalog to edit
+				alert("Cannot edit root catalog!");
+				return;
+			}			
+			$scope.catName = catToEdit.name;
+			$scope.catDes = catToEdit.des;
+		}
+		if (parentCatalogOfNewSubCat) {
+			$scope.catName = null;
+			$scope.catDes = null;
+		}
+		$scope.catToEdit = catToEdit;
+		$scope.selectedCatalogToAddSubCat = parentCatalogOfNewSubCat;
+		$scope.readonly = false;
 	};
 	
 	$scope.updateCatalog = function() {
@@ -73,6 +91,11 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 		// TODO with selectedCatalogToAddSubCat
 	};
 	$scope.clearForm = function() {
-		// TODO with selectedCatalogToAddSubCat
+		$scope.catToEdit = null;
+		$scope.selectedCatalogToAddSubCat = null;
+		$scope.catName = null;
+		$scope.catDes = null;
+		$scope.readonly = true;
 	};
+
   }]);
