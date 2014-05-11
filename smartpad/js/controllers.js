@@ -44,7 +44,7 @@ smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User'
 smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog',
   function($scope, $rootScope, Catalog) {
     
-	Catalog.get({userName: $rootScope.user.userNameText}, function(catalog) {
+	Catalog.get({user: $rootScope.user.userNameText}, function(catalog) {
 		$scope.rootCatalog = catalog.data[0];
 		$scope.rootCatalog.name = "Catalog";
 		$scope.rootCatalog.root = true;
@@ -83,12 +83,23 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 		$scope.selectedCatalogToAddSubCat = parentCatalogOfNewSubCat;
 		$scope.readonly = false;
 	};
-	
 	$scope.updateCatalog = function() {
-		// TODO with selectedCatalogToAddSubCat
+		alert($scope.catToEdit)
+		if ($scope.catToEdit != null) {
+			$scope.catToEdit.name = $scope.catName;
+			$scope.catToEdit.des = $scope.catDes;
+			$scope.catToEdit.token.userName = $rootScope.user.userNameText;
+			Catalog.save($scope.catToEdit,
+				function(dataSuccess) {
+				},
+				function(dataFail) {
+				}
+			);
+			return;
+		}
 	};
-	$scope.addSubCatalog = function() {
-		// TODO with selectedCatalogToAddSubCat
+	$scope.deleteCat = function(catDelete) {
+		// TODO
 	};
 	$scope.clearForm = function() {
 		$scope.catToEdit = null;
