@@ -143,7 +143,24 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 		}
 	};
 	$scope.deleteCat = function(catDelete) {
-		// TODO
+		Catalog.delete({user: $rootScope.user.userNameText, catalogId: catDelete.id},
+				function(dataSuccess) {
+					$scope.rootCatalog = dataSuccess.data[0];
+					$scope.rootCatalog.name = "Catalog";
+					$scope.rootCatalog.root = true;
+					angular.forEach($scope.rootCatalog.allSubCatalogs, function(currCatalog, keyAsIndex) {
+					   currCatalog.index = keyAsIndex;
+					 });
+					$scope.catalog = $scope.rootCatalog;
+					$scope.selectedCatalogToAddSubCat = null;//$scope.rootCatalog;//{id: null, name: "", des: "", checkedToAddSubCat: false};
+					$scope.catToEdit = null;
+					$scope.catName = null;
+					$scope.catDes = null;
+					$scope.readonly = true;
+				},
+				function(dataFail) {
+				}
+		);
 	};
 	$scope.clearForm = function() {
 		$scope.catToEdit = null;

@@ -23,5 +23,5 @@ catalogServices.factory('Catalog', ['$resource',
 var catalogServices = angular.module('catalogServices', ['ngResource']);
 catalogServices.factory('Catalog', ['$resource',
   function($resource) {
-    return $resource('http://localhost:8090/catalog/:user', null);
+    return $resource('http://localhost:8090/catalog/:user/:catalogId', null);
 }]);
