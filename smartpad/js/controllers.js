@@ -44,7 +44,7 @@ smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User'
 smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog',
   function($scope, $rootScope, Catalog) {
     
-	Catalog.get({user: $rootScope.user.userNameText}, function(catalog) {
+    $scope.getCatalogCallBack = function(catalog) {
 		$scope.rootCatalog = catalog.data[0];
 		$scope.rootCatalog.name = "Catalog";
 		$scope.rootCatalog.root = true;
@@ -57,9 +57,12 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 		$scope.catName = null;
 		$scope.catDes = null;
 		$scope.readonly = true;
-		//$scope.$clearForm();
-	});
+	};
 	
+	Catalog.get({user: $rootScope.user.userNameText}, function(catalog) {
+		$scope.getCatalogCallBack(catalog);
+	});
+
 	$scope.loadSubCatalog = function(catalog) {
 		$scope.catalog = catalog;
 		this.clearForm();
@@ -84,7 +87,6 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 		$scope.readonly = false;
 	};
 	$scope.updateCatalog = function() {
-		alert($scope.catToEdit)
 		//var editCat = null;
 		if ($scope.catToEdit != null) {
 			$scope.catToEdit.name = $scope.catName;
@@ -93,19 +95,7 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			//var me = this;
 			Catalog.save($scope.catToEdit,
 				function(dataSuccess) {
-					//console.log(dataSuccess)
-					$scope.rootCatalog = dataSuccess.data[0];
-					$scope.rootCatalog.name = "Catalog";
-					$scope.rootCatalog.root = true;
-					angular.forEach($scope.rootCatalog.allSubCatalogs, function(currCatalog, keyAsIndex) {
-					   currCatalog.index = keyAsIndex;
-					 });
-					$scope.catalog = $scope.rootCatalog;
-					$scope.selectedCatalogToAddSubCat = null;//$scope.rootCatalog;//{id: null, name: "", des: "", checkedToAddSubCat: false};
-					$scope.catToEdit = null;
-					$scope.catName = null;
-					$scope.catDes = null;
-					$scope.readonly = true;
+					$scope.getCatalogCallBack(dataSuccess);
 				},
 				function(dataFail) {
 				}
@@ -122,44 +112,21 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			newCatalog.allItems = null;
 			newCatalog.allFields = null;
 			Catalog.save(newCatalog,
-					function(dataSuccess) {
-						//console.log(dataSuccess)
-						$scope.rootCatalog = dataSuccess.data[0];
-						$scope.rootCatalog.name = "Catalog";
-						$scope.rootCatalog.root = true;
-						angular.forEach($scope.rootCatalog.allSubCatalogs, function(currCatalog, keyAsIndex) {
-						   currCatalog.index = keyAsIndex;
-						 });
-						$scope.catalog = $scope.rootCatalog;
-						$scope.selectedCatalogToAddSubCat = null;//$scope.rootCatalog;//{id: null, name: "", des: "", checkedToAddSubCat: false};
-						$scope.catToEdit = null;
-						$scope.catName = null;
-						$scope.catDes = null;
-						$scope.readonly = true;
-					},
-					function(dataFail) {
-					}
-				);
+				function(dataSuccess) {
+					$scope.getCatalogCallBack(dataSuccess);
+				},
+				function(dataFail) {
+				}
+			);
 		}
 	};
 	$scope.deleteCat = function(catDelete) {
 		Catalog.delete({user: $rootScope.user.userNameText, catalogId: catDelete.id},
-				function(dataSuccess) {
-					$scope.rootCatalog = dataSuccess.data[0];
-					$scope.rootCatalog.name = "Catalog";
-					$scope.rootCatalog.root = true;
-					angular.forEach($scope.rootCatalog.allSubCatalogs, function(currCatalog, keyAsIndex) {
-					   currCatalog.index = keyAsIndex;
-					 });
-					$scope.catalog = $scope.rootCatalog;
-					$scope.selectedCatalogToAddSubCat = null;//$scope.rootCatalog;//{id: null, name: "", des: "", checkedToAddSubCat: false};
-					$scope.catToEdit = null;
-					$scope.catName = null;
-					$scope.catDes = null;
-					$scope.readonly = true;
-				},
-				function(dataFail) {
-				}
+			function(dataSuccess) {
+				$scope.getCatalogCallBack(dataSuccess);
+			},
+			function(dataFail) {
+			}
 		);
 	};
 	$scope.clearForm = function() {
