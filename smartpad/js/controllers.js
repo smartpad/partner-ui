@@ -85,17 +85,61 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 	};
 	$scope.updateCatalog = function() {
 		alert($scope.catToEdit)
+		//var editCat = null;
 		if ($scope.catToEdit != null) {
 			$scope.catToEdit.name = $scope.catName;
 			$scope.catToEdit.des = $scope.catDes;
 			$scope.catToEdit.token.userName = $rootScope.user.userNameText;
+			//var me = this;
 			Catalog.save($scope.catToEdit,
 				function(dataSuccess) {
+					//console.log(dataSuccess)
+					$scope.rootCatalog = dataSuccess.data[0];
+					$scope.rootCatalog.name = "Catalog";
+					$scope.rootCatalog.root = true;
+					angular.forEach($scope.rootCatalog.allSubCatalogs, function(currCatalog, keyAsIndex) {
+					   currCatalog.index = keyAsIndex;
+					 });
+					$scope.catalog = $scope.rootCatalog;
+					$scope.selectedCatalogToAddSubCat = null;//$scope.rootCatalog;//{id: null, name: "", des: "", checkedToAddSubCat: false};
+					$scope.catToEdit = null;
+					$scope.catName = null;
+					$scope.catDes = null;
+					$scope.readonly = true;
 				},
 				function(dataFail) {
 				}
 			);
 			return;
+		}
+		if ($scope.selectedCatalogToAddSubCat != null) {
+			var newCatalog = {};
+			newCatalog.name = $scope.catName;
+			newCatalog.des = $scope.catDes;
+			newCatalog.token = $scope.selectedCatalogToAddSubCat.token;
+			newCatalog.parentId = $scope.selectedCatalogToAddSubCat.id;
+			newCatalog.allSubCatalogs = null;
+			newCatalog.allItems = null;
+			newCatalog.allFields = null;
+			Catalog.save(newCatalog,
+					function(dataSuccess) {
+						//console.log(dataSuccess)
+						$scope.rootCatalog = dataSuccess.data[0];
+						$scope.rootCatalog.name = "Catalog";
+						$scope.rootCatalog.root = true;
+						angular.forEach($scope.rootCatalog.allSubCatalogs, function(currCatalog, keyAsIndex) {
+						   currCatalog.index = keyAsIndex;
+						 });
+						$scope.catalog = $scope.rootCatalog;
+						$scope.selectedCatalogToAddSubCat = null;//$scope.rootCatalog;//{id: null, name: "", des: "", checkedToAddSubCat: false};
+						$scope.catToEdit = null;
+						$scope.catName = null;
+						$scope.catDes = null;
+						$scope.readonly = true;
+					},
+					function(dataFail) {
+					}
+				);
 		}
 	};
 	$scope.deleteCat = function(catDelete) {
