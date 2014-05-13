@@ -1,0 +1,21 @@
+<script type="text/ng-template" id="catalogTree.html">
+  {{catalogIndex.name}}
+  <div ng-if="selectedCatalogToAddSubCat != null">
+	Parent catalog to addSubCat {{selectedCatalogToAddSubCat.name}}
+  </div>
+  <ul ng-if="catalogIndex.allSubCatalogs">
+      <li ng-repeat="catalogIndex in catalogIndex.allSubCatalogs" 
+         ng-include="'catalogTree.html'">
+      </li>
+  </ul>
+</script>
+
+<div>
+
+</div>
+
+<div>
+<ul>
+  <li ng-repeat="catalogIndex in rootCatalog.allSubCatalogs" ng-include="'catalogTree.html'"></li>
+</ul>
+</div>

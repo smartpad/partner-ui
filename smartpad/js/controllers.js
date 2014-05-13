@@ -25,7 +25,7 @@ smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParam
 						$location.path('/defaults');
 						return;
 					}
-                   alert('Account invalid: ' + data.data[0]);
+                    alert('Account invalid: ' + data.data[0]);
                 },
                 function(err, headers)
                 {
