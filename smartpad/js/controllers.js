@@ -14,8 +14,8 @@ smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParam
 	$rootScope.user = {};
     $scope.login = function() {		
 		var user = new User();
-		user.userNameText = $scope.user.userNameText;
-		user.passwordText = $scope.user.passwordText;
+		user.userNameText = $("#username").val();//$scope.user.userNameText;
+		user.passwordText = $("#password").val();//$scope.user.passwordText;
 		user.data = $scope.user;
 
 		user.$acc({}, function(data, headers)
