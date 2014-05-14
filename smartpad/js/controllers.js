@@ -2,16 +2,16 @@
 
 /* Controllers */
 
-var smartpadControllers = angular.module('smartpadControllers', []);
-/*smartpadControllers.config(function($httpProvider) {
-	console.log($httpProvider.defaults);
-	delete $httpProvider.defaults.headers.common['X-Requested-With'];	
-});*/
+var smartpadControllers = angular.module('smartpadControllers', ['LocalStorageModule']);
+smartpadControllers.config(['localStorageServiceProvider', function(localStorageServiceProvider){
+	/*localStorageServiceProvider.setPrefix('demoPrefix');*/
+}]);
 
-smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParams', 'User', '$location',
-  function($scope, $rootScope, $routeParams, User, $location) {
+smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParams', 'User', '$location', 'localStorageService',
+  function($scope, $rootScope, $routeParams, User, $location, localStorageService) {
     $scope.user = {};
 	$rootScope.user = {};
+
     $scope.login = function() {		
 		var user = new User();
 		user.userNameText = $("#username").val();//$scope.user.userNameText;
@@ -19,9 +19,10 @@ smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParam
 		user.data = $scope.user;
 
 		user.$acc({}, function(data, headers)
-                {
+                {alert(JSON.stringify(data));
 					if (data.success) {
 						$rootScope.user = data.data[0];
+						localStorageService.set('userNameText', data.data[0].userNameText);
 						$location.path('/defaults');
 						return;
 					}
@@ -41,10 +42,10 @@ smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User'
   function($scope, $routeParams, User) {
     // TODO
   }]);
-smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog',
-  function($scope, $rootScope, Catalog) {
+smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog', 'localStorageService',
+  function($scope, $rootScope, Catalog, localStorageService) {
     
-	Catalog.get({userName: $rootScope.user.userNameText}, function(catalog) {
+	Catalog.get({userName: localStorageService.get('userNameText')/*$rootScope.user.userNameText*/}, function(catalog) {
 		$scope.rootCatalog = catalog.data[0];
 		$scope.rootCatalog.name = "Catalog";
 		$scope.rootCatalog.root = true;
