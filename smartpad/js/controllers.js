@@ -41,7 +41,95 @@ smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User'
   function($scope, $routeParams, User) {
     // TODO
   }]);
+
 smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog',
+	function($scope, $rootScope, Catalog) {
+		$scope.clearForm = function() {
+			$scope.catalog = $scope.rootCatalog;
+			$scope.action = null;//null, "addsubcat"
+			$scope.catName = null;
+			$scope.catDes = null;
+			//$scope.readonly = true;
+		};
+
+		$scope.getCatalogCallBack = function(catalog) {
+			$scope.rootCatalog = catalog.data[0];
+			$scope.catalogIndex = $scope.rootCatalog;
+			//$scope.rootCatalog.name = "Root Catalog";
+			$scope.rootCatalog.root = true;
+			angular.forEach($scope.rootCatalog.allSubCatalogs, function(currCatalog, keyAsIndex) {
+			   currCatalog.index = keyAsIndex;
+			 });
+			this.clearForm();
+		};
+		Catalog.get({user: $rootScope.user.userNameText}, function(catalogResult) {
+			$scope.getCatalogCallBack(catalogResult);
+		});
+		$scope.loadSubCatalog = function(catalog) {
+			this.clearForm();
+			$scope.catalog = catalog;
+			$scope.catName = catalog.name;
+			$scope.catDes = catalog.des;
+			//$scope.readonly = $scope.catalog == $scope.rootCatalog;
+		};
+		$scope.selectToAddSubCat = function(parentCatalogOfNewSubCat) {
+			this.clearForm();
+			$scope.catalog = parentCatalogOfNewSubCat;
+			//$scope.readonly = $scope.catalog == $scope.rootCatalog;
+			$scope.action = "addsubcat";
+		};
+		$scope.updateCatalog = function() {
+			//var editCat = null;
+			if ($scope.action == null) {
+				$scope.catalog.name = $scope.catName;
+				$scope.catalog.des = $scope.catDes;
+				$scope.catalog.token.userName = $rootScope.user.userNameText;
+				//var me = this;
+				Catalog.save($scope.catalog,
+					function(dataSuccess) {
+						$scope.getCatalogCallBack(dataSuccess);
+					},
+					function(dataFail) {
+					}
+				);
+				return;
+			}
+			if ($scope.action == "addsubcat") {
+				var newCatalog = {};
+				newCatalog.name = $scope.catName;
+				newCatalog.des = $scope.catDes;
+				newCatalog.token = $scope.catalog.token;
+				newCatalog.parentId = $scope.catalog.id;
+				newCatalog.allSubCatalogs = null;
+				newCatalog.allItems = null;
+				newCatalog.allFields = null;
+				Catalog.save(newCatalog,
+					function(dataSuccess) {
+						$scope.getCatalogCallBack(dataSuccess);
+					},
+					function(dataFail) {
+					}
+				);
+			}
+		};
+		$scope.addSubCatalog = function() {
+			//this.selectToAddSubCat($scope.catalog);
+			$scope.action = "addsubcat";
+			this.updateCatalog();
+		};
+		$scope.deleteCat = function(catDelete) {
+			Catalog.delete({user: $rootScope.user.userNameText, catalogId: catDelete.id},
+				function(dataSuccess) {
+					$scope.getCatalogCallBack(dataSuccess);
+				},
+				function(dataFail) {
+				}
+			);
+		};
+		
+}]);
+
+smartpadControllers.controller('CatalogCtrl2', ['$scope', '$rootScope', 'Catalog',
   function($scope, $rootScope, Catalog) {
     
     $scope.getCatalogCallBack = function(catalog) {
@@ -52,6 +140,7 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 		   currCatalog.index = keyAsIndex;
 		 });
 		$scope.catalog = $scope.rootCatalog;
+		$scope.catalogIndex = $scope.rootCatalog;
 		$scope.selectedCatalogToAddSubCat = null;//$scope.rootCatalog;//{id: null, name: "", des: "", checkedToAddSubCat: false};
 		$scope.catToEdit = null;
 		$scope.catName = null;

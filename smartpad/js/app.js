@@ -25,8 +25,8 @@ smartpadApp.config(['$routeProvider',
         controller: 'MainAppCtrl'
       }).
 	  when('/catalog', {
-        templateUrl: 'partials/catalog.html',
-		//templateUrl: 'partials/catalogTree.html',
+        //templateUrl: 'partials/catalog.html',
+		templateUrl: 'partials/catalogTree.html',
         controller: 'CatalogCtrl'
       }).
       otherwise({
