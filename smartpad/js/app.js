@@ -29,6 +29,10 @@ smartpadApp.config(['$routeProvider',
 		templateUrl: 'partials/catalogTree.html',
         controller: 'CatalogCtrl'
       }).
+      when('/branch', {
+		templateUrl: 'partials/branch.html',
+        controller: 'BranchCtrl'
+      }).
       otherwise({
         redirectTo: '/login'
       });

@@ -225,5 +225,11 @@ smartpadControllers.controller('CatalogCtrl2', ['$scope', '$rootScope', 'Catalog
 		$scope.catDes = null;
 		$scope.readonly = true;
 	};
-
+}]);
+  
+smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
+  function($scope, $rootScope, Branch) {
+		$scope.clearForm = function() {
+			
+		};
   }]);
