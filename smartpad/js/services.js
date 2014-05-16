@@ -25,3 +25,9 @@ catalogServices.factory('Catalog', ['$resource',
   function($resource) {
     return $resource('http://localhost:8090/catalog/:user/:catalogId', null);
 }]);
+
+var branchServices = angular.module('branchServices', ['ngResource']);
+branchServices.factory('Branch', ['$resource',
+  function($resource) {
+    return $resource('http://localhost:8090/branch/:user/:branchId', null);
+}]);

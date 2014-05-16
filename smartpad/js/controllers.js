@@ -29,6 +29,7 @@ smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParam
                 },
                 function(err, headers)
                 {
+                	console.log(err)
                     alert('Login failed: \'' + err + '\'!');
                 });
     }
@@ -230,6 +231,16 @@ smartpadControllers.controller('CatalogCtrl2', ['$scope', '$rootScope', 'Catalog
 smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
   function($scope, $rootScope, Branch) {
 		$scope.clearForm = function() {
-			
+			// TODO clear all form data
 		};
+		
+		$scope.getBranchCallBack = function(branchList) {
+			$scope.rootBranch = branchList.rootBranch;
+			$scope.rootBranch.root = true;
+			$scope.allStores = branchList.allStores;
+			this.clearForm();
+		};
+		Branch.get({user: $rootScope.user.userNameText}, function(branchResult) {
+			$scope.getBranchCallBack(branchResult);
+		});
   }]);
