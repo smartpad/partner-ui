@@ -42,7 +42,7 @@ Root catalog
 			   placeholder="add cat name here" > <!-- ng-readonly="readonly" -->
 		<br>
 		<input type="text" ng-model="catDes"  size="100"
-			   placeholder="add cat des here" ng-readonly="readonly" >
+			   placeholder="add cat des here">
 		<input ng-if="catalog != rootCatalog" class="btn-primary" type="button" value="Update" ng-click="updateCatalog()">
 		<input class="btn-primary" type="button" value="Add sub cat" ng-click="addSubCatalog()">
 		<input class="btn-primary" type="button" value="Clear" ng-click="clearForm()">
