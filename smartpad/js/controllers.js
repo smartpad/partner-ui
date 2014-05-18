@@ -230,28 +230,33 @@ smartpadControllers.controller('CatalogCtrl2', ['$scope', '$rootScope', 'Catalog
   
 smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
   function($scope, $rootScope, Branch) {
-		$scope.hours = [24];
-		$scope.minutes = [60];
-		for (var h = 0; h < 24; h++) {
-			$scope.hours[h] = {};
-			$scope.hours[h].id = h;
-			var id = h + 1;
-			$scope.hours[h].name = id;
-			if (id < 10) {
-				$scope.hours[h].name = '0' + id;
-			}
-		}
-		for (var m = 0; m < 60; m++) {
-			$scope.minutes[m] = {};
-			$scope.minutes[m].id = m;
-			var id = m + 1;
-			$scope.minutes[m].name = id;
-			if (id < 10) {
-				$scope.minutes[m].name = '0' + id;
-			}
-		}
-		// Init data for open hours
+		
 		$scope.init = function () {
+			$scope.hours = [25];
+			$scope.minutes = [61];
+			$scope.hours[0] = {id:0, name:'--'};
+			for (var h = 1; h < 25; h++) {
+				$scope.hours[h] = {};
+				$scope.hours[h].id = h;
+				$scope.hours[h].name = h;
+				if (h < 10) {
+					$scope.hours[h].name = '0' + h;
+				}
+			}
+			$scope.minutes[0] = {id:0, name:'--'};
+			for (var m = 1; m < 61; m++) {
+				$scope.minutes[m] = {};
+				$scope.minutes[m].id = m;
+				$scope.minutes[m].name = m;
+				if (m < 10) {
+					$scope.minutes[m].name = '0' + m;
+				}
+			}
+			this.initOpenHours();
+		};
+		$scope.initOpenHours = function () {
+			// Init data for open hours
+			$scope.openHoursDes = null;
 			$scope.dayHourFrom = $scope.hours[0];
 			$scope.dayHourTo = $scope.hours[0];
 			$scope.dayMinFrom = $scope.minutes[0];
@@ -284,7 +289,7 @@ smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
 			$scope.email = null;
 			$scope.phone = null;
 			$scope.addressLines = null;
-			init();
+			this.initOpenHours();
 		};
 		$scope.selectStore = function(store) {
 			// TODO check editing store to notify user save it
@@ -293,27 +298,28 @@ smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
 			$scope.desc = store.desc;
 			$scope.email = store.email;
 			$scope.phone = store.phone;
-			$scope.addressLines = store.address;
+			$scope.addressLines = store.addressLines;
 			
-			$scope.dayHourFrom = $scope.hours[store.dayHourFrom];
-			$scope.dayHourTo = $scope.hours[store.dayHourTo];
-			$scope.dayMinFrom = $scope.minutes[store.dayMinFrom];
-			$scope.dayMinTo = $scope.minutes[store.dayMinTo];
+			$scope.openHoursDes = store.openHours.desc;
+			$scope.dayHourFrom = $scope.hours[store.openHours.dailyHour.fromValue];
+			$scope.dayHourTo = $scope.hours[store.openHours.dailyHour.toValue];
+			$scope.dayMinFrom = $scope.minutes[store.openHours.dailyMin.fromValue];
+			$scope.dayMinTo = $scope.minutes[store.openHours.dailyMin.toValue];
 			
-			$scope.sarHourFrom = $scope.hours[store.sarHourFrom];
-			$scope.sarHourTo = $scope.hours[store.sarHourTo];
-			$scope.sarMinFrom = $scope.minutes[store.sarMinFrom];
-			$scope.sarMinTo = $scope.minutes[store.sarMinTo];
+			$scope.sarHourFrom = $scope.hours[store.openHours.sarHour.fromValue];
+			$scope.sarHourTo = $scope.hours[store.openHours.sarHour.toValue];
+			$scope.sarMinFrom = $scope.minutes[store.openHours.sarMin.fromValue];
+			$scope.sarMinTo = $scope.minutes[store.openHours.sarMin.toValue];
 			
-			$scope.sunHourFrom = $scope.hours[store.sunHourFrom];
-			$scope.sunHourTo = $scope.hours[store.sunHourTo];
-			$scope.sunMinFrom = $scope.minutes[store.sunMinFrom];
-			$scope.sunMinTo = $scope.minutes[store.sunMinTo];
+			$scope.sunHourFrom = $scope.hours[store.openHours.sunHour.fromValue];
+			$scope.sunHourTo = $scope.hours[store.openHours.sunHour.toValue];
+			$scope.sunMinFrom = $scope.minutes[store.openHours.sunMin.fromValue];
+			$scope.sunMinTo = $scope.minutes[store.openHours.sunMin.toValue];
 			
-			$scope.holidayHourFrom = $scope.hours[store.holidayHourFrom];
-			$scope.holidayHourTo = $scope.hours[store.holidayHourTo];
-			$scope.holidayMinFrom = $scope.minutes[store.holidayMinFrom];
-			$scope.holidayMinTo = $scope.minutes[store.holidayMinTo];
+			$scope.holidayHourFrom = $scope.hours[store.openHours.holidayHour.fromValue];
+			$scope.holidayHourTo = $scope.hours[store.openHours.holidayHour.toValue];
+			$scope.holidayMinFrom = $scope.minutes[store.openHours.holidayMin.fromValue];
+			$scope.holidayMinTo = $scope.minutes[store.openHours.holidayMin.toValue];
 		}
 		$scope.getBranchCallBack = function(branchList) {
 			$scope.rootBranch = branchList.rootBranch;
@@ -324,9 +330,11 @@ smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
 			this.selectStore($scope.rootBranch);
 		};
 		$scope.addStore = function() {
-			clearForm();
+			this.clearForm();
 			// selectedStore is setting to rootBranch so need reset id to mark this is a new
 			$scope.selectedStore.id = null;
+			console.log('rootStore');
+			console.log($scope.rootBranch);
 		}
 
 		Branch.get({user: $rootScope.user.userNameText}, function(branchResult) {
@@ -334,33 +342,34 @@ smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
 		});
 		
 		$scope.save = function() {
-			$scope.selectedStore.name = name;
-			$scope.selectedStore.desc = desc;
-			$scope.selectedStore.email = email;
-			$scope.selectedStore.phone = phone;
-			$scope.selectedStore.addressLines = addressLines;
+			$scope.selectedStore.name = $scope.name;
+			$scope.selectedStore.desc = $scope.desc;
+			$scope.selectedStore.email = $scope.email;
+			$scope.selectedStore.phone = $scope.phone;
+			$scope.selectedStore.addressLines = $scope.addressLines;
 			
-			$scope.selectedStore.dayHourFrom = $scope.dayHourFrom;
-			$scope.selectedStore.dayHourTo = $scope.dayHourTo;
-			$scope.selectedStore.dayMinFrom = $scope.dayMinFrom;
-			$scope.selectedStore.dayMinTo = $scope.dayMinTo;
+			$scope.selectedStore.openHours.desc = $scope.openHoursDes;
+			$scope.selectedStore.openHours.dailyHour.fromValue = $scope.dayHourFrom.id;
+			$scope.selectedStore.openHours.dailyHour.toValue = $scope.dayHourTo.id;
+			$scope.selectedStore.openHours.dailyMin.fromValue = $scope.dayMinFrom.id;
+			$scope.selectedStore.openHours.dailyMin.toValue = $scope.dayMinTo.id;
 			
-			$scope.selectedStore.sarHourFrom = $scope.sarHourFrom;
-			$scope.selectedStore.sarHourTo = $scope.sarHourTo;
-			$scope.selectedStore.sarMinFrom = $scope.sarMinFrom;
-			$scope.selectedStore.sarMinTo = $scope.sarMinTo;
+			$scope.selectedStore.openHours.sarHour.fromValue = $scope.sarHourFrom.id;
+			$scope.selectedStore.openHours.sarHour.toValue = $scope.sarHourTo.id;
+			$scope.selectedStore.openHours.sarMin.fromValue = $scope.sarMinFrom.id;
+			$scope.selectedStore.openHours.sarMin.toValue = $scope.sarMinTo.id;
 			
-			$scope.selectedStore.sunHourFrom = $scope.sunHourFrom;
-			$scope.selectedStore.sunHourTo = $scope.sunHourTo;
-			$scope.selectedStore.sunMinFrom = $scope.sunMinFrom;
-			$scope.selectedStore.sunMinTo = $scope.sunMinTo;
+			$scope.selectedStore.openHours.sunHour.fromValue = $scope.sunHourFrom.id;
+			$scope.selectedStore.openHours.sunHour.toValue = $scope.sunHourTo.id;
+			$scope.selectedStore.openHours.sunMin.fromValue = $scope.sunMinFrom.id;
+			$scope.selectedStore.openHours.sunMin.toValue = $scope.sunMinTo.id;
 			
-			$scope.selectedStore.holidayHourFrom = $scope.holidayHourFrom;
-			$scope.selectedStore.holidayHourTo = $scope.holidayHourTo;
-			$scope.selectedStore.holidayMinFrom = $scope.holidayMinFrom;
-			$scope.selectedStore.holidayMinTo = $scope.holidayMinTo;
-			
-			$scope.selectedStore.token.userName = $rootScope.user.userNameText;
+			$scope.selectedStore.openHours.holidayHour.fromValue = $scope.holidayHourFrom.id;
+			$scope.selectedStore.openHours.holidayHour.toValue = $scope.holidayHourTo.id;
+			$scope.selectedStore.openHours.holidayMin.fromValue = $scope.holidayMinFrom.id;
+			$scope.selectedStore.openHours.holidayMin.toValue = $scope.holidayMinTo.id;
+
+			$scope.selectedStore.userName = $rootScope.user.userNameText;
 			// TODO cat, gps
 			Branch.save($scope.selectedStore,
 				function(dataSuccess) {
