@@ -1,0 +1,53 @@
+<script type="text/ng-template" id="catalogTree.html">
+  <span ng-style="catalogIndex == catalog && {'background-color': 'red'}">
+	<href  ng-click="loadSubCatalog(catalogIndex)">{{catalogIndex.name}}</href>
+	<input class="btn-primary" type="button" value="Add sub cat" ng-click="selectToAddSubCat(catalogIndex)">
+	<input ng-if="catalogIndex != rootCatalog" class="btn-primary" type="button" value="Delete" ng-click="deleteCat(catalogIndex)">
+  </span>
+
+  <ul ng-if="catalogIndex.allSubCatalogs">
+      <li ng-repeat="catalogIndex in catalogIndex.allSubCatalogs" 
+         ng-include="'catalogTree.html'">
+      </li>
+  </ul>
+</script>
+
+<!-- <div>
+Root catalog
+<br> 
+{{rootCatalog.name}}
+<br>
+{{rootCatalog.des}}
+</div> -->
+
+<table>
+<tr>
+<td>
+	<ul>
+	  <li ng-model="catalogIndex" ng-include="'catalogTree.html'"></li>
+	</ul>
+</td>
+<td align="top" valign="top">
+<span>
+	<!-- <div ng-if="selectedCatalogToAddSubCat != null">
+		Parent catalog to addSubCat {{selectedCatalogToAddSubCat.name}}
+	</div>
+	<div ng-if="catToEdit != null">
+		Catalog to edit {{catToEdit.name}}
+	</div> -->
+	
+	<br>
+	<form>
+		<input type="text" ng-model="catName"  size="30"
+			   placeholder="add cat name here" > <!-- ng-readonly="readonly" -->
+		<br>
+		<input type="text" ng-model="catDes"  size="100"
+			   placeholder="add cat des here">
+		<input ng-if="catalog != rootCatalog" class="btn-primary" type="button" value="Update" ng-click="updateCatalog()">
+		<input class="btn-primary" type="button" value="Add sub cat" ng-click="addSubCatalog()">
+		<input class="btn-primary" type="button" value="Clear" ng-click="clearForm()">
+	</form>
+</span>
+</td>
+</tr>
+</table>

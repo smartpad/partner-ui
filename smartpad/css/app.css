@@ -82,3 +82,24 @@ ul.specs dt {
 h1 {
   border-bottom: 1px solid gray;
 }
+
+.catalog-list {
+	list-style: none;
+	padding: 5px;
+}
+
+.catalog-name {
+	display: inline-block;
+	width: 200px;
+}
+.catalog-name:HOVER {
+	background-color: #ccc;
+	cursor: pointer;
+}
+.catalog-add-subcat-btn {
+	
+}
+
+.catalog-update-btn {
+	
+}

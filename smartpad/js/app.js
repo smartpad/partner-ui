@@ -6,7 +6,8 @@ var smartpadApp = angular.module('smartpadApp', [
   'ngRoute',
   'smartpadControllers',
   'userServices',
-  'catalogServices'
+  'catalogServices',
+  'branchServices'
 ]);
 
 smartpadApp.config(['$routeProvider',
@@ -25,8 +26,13 @@ smartpadApp.config(['$routeProvider',
         controller: 'MainAppCtrl'
       }).
 	  when('/catalog', {
-        templateUrl: 'partials/catalog.html',
+        //templateUrl: 'partials/catalog.html',
+		templateUrl: 'partials/catalogTree.html',
         controller: 'CatalogCtrl'
+      }).
+      when('/branch', {
+		templateUrl: 'partials/branch.html',
+        controller: 'BranchCtrl'
       }).
       otherwise({
         redirectTo: '/login'
