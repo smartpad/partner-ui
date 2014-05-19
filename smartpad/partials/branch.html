@@ -1,104 +1,130 @@
 <div ng-init="init()">
-{{rootBranch.name}}
-<!-- <input class="btn-primary" type="button" value="Add store" ng-click="addStore()"> -->
-<br>
 
-<!-- Store List
-<li ng-repeat="storeIndex in allStores">
-	<href ng-click="selectStore"> {{storeIndex.name}} </href>
-	<input class="btn-primary" type="button" value="Delete" ng-click="delStore(storeIndex)">
-	<br>
-</li> -->
+<table><tr>
+	<td>
+		{{rootBranch.name}}
+		<!-- <input class="btn-primary" type="button" value="Add store" ng-click="addStore()"> -->
+		<br>
+		
+		<!-- Store List
+		<li ng-repeat="storeIndex in allStores">
+			<href ng-click="selectStore"> {{storeIndex.name}} </href>
+			<input class="btn-primary" type="button" value="Delete" ng-click="delStore(storeIndex)">
+			<br>
+		</li> -->
+		
+		Store information
+		<form>
+			{{selectedStore.name}}
+			<br>
+			<input type="text" ng-model="name"  size="30"
+				   placeholder="add store name here" > <!-- ng-readonly="readonly" -->
+			<br>
+			<input type="text" ng-model="desc"  size="100" placeholder="add store des here">
+			<br>
+			<input type="text" ng-model="email"  size="30" placeholder="add store email here">
+			<br>
+			<input type="text" ng-model="phone"  size="30" placeholder="add store phone here">
+			<br>
+			<input type="text" ng-model="addressLines"  size="30" placeholder="add store address here">
+			<br>
+			-----------------
+			<br>
+			Select open hours
+			<br>
+			<input type="text" ng-model="openHoursDes"  size="30" placeholder="add open hours des here">
+			<br>
+			Select hour for days:
+			<br>
+				<!-- <select ng-model="selectedProject"  ng-options="p.name for p in Projects | orderBy: 'name'"  ng-init="selectedProject.id=User.projectId" ng-required>
+				</select> -->
+				From:
+				<select ng-model="dayHourFrom"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
+				</select>
+				:
+				<select ng-model="dayMinFrom"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
+				</select>
+				<br>
+				To:
+				<select ng-model="dayHourTo"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
+				</select>
+				:
+				<select ng-model="dayMinTo"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
+				</select>
+			<br>
+			Select hour for sar
+			<br>
+				From:
+				<select ng-model="sarHourFrom"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
+				</select>
+				:
+				<select ng-model="sarMinFrom"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
+				</select>
+				<br>
+				To:
+				<select ng-model="sarHourTo"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
+				</select>
+				:
+				<select ng-model="sarMinTo"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
+				</select>
+			<br>
+			Select hour for sun
+			<br>
+				From:
+				<select ng-model="sunHourFrom"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
+				</select>
+				:
+				<select ng-model="sunMinFrom"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
+				</select>
+				<br>
+				To:
+				<select ng-model="sunHourTo"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
+				</select>
+				:
+				<select ng-model="sunMinTo"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
+				</select>
+			<br>
+			Select hour for holiday
+			<br>
+				From:
+				<select ng-model="holidayHourFrom"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
+				</select>
+				:
+				<select ng-model="holidayMinFrom"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
+				</select>
+				<br>
+				To:
+				<select ng-model="holidayHourTo"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
+				</select>
+				:
+				<select ng-model="holidayMinTo"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
+				</select>
+			<br>
+			<input class="btn-primary" type="button" value="Save" ng-click="save()">
+		</form>
+		<br>
+	</td>
 
-Store information
-<form>
-	{{selectedStore.name}}
-	<br>
-	<input type="text" ng-model="name"  size="30"
-		   placeholder="add store name here" > <!-- ng-readonly="readonly" -->
-	<br>
-	<input type="text" ng-model="desc"  size="100" placeholder="add store des here">
-	<br>
-	<input type="text" ng-model="email"  size="30" placeholder="add store email here">
-	<br>
-	<input type="text" ng-model="phone"  size="30" placeholder="add store phone here">
-	<br>
-	<input type="text" ng-model="addressLines"  size="30" placeholder="add store address here">
-	<br>
-	-----------------
-	<br>
-	Select open hours
-	<br>
-	<input type="text" ng-model="openHoursDes"  size="30" placeholder="add open hours des here">
-	<br>
-	Select hour for days:
-	<br>
-		<!-- <select ng-model="selectedProject"  ng-options="p.name for p in Projects | orderBy: 'name'"  ng-init="selectedProject.id=User.projectId" ng-required>
-		</select> -->
-		From:
-		<select ng-model="dayHourFrom"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
-		</select>
-		:
-		<select ng-model="dayMinFrom"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
-		</select>
-		<br>
-		To:
-		<select ng-model="dayHourTo"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
-		</select>
-		:
-		<select ng-model="dayMinTo"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
-		</select>
-	<br>
-	Select hour for sar
-	<br>
-		From:
-		<select ng-model="sarHourFrom"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
-		</select>
-		:
-		<select ng-model="sarMinFrom"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
-		</select>
-		<br>
-		To:
-		<select ng-model="sarHourTo"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
-		</select>
-		:
-		<select ng-model="sarMinTo"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
-		</select>
-	<br>
-	Select hour for sun
-	<br>
-		From:
-		<select ng-model="sunHourFrom"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
-		</select>
-		:
-		<select ng-model="sunMinFrom"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
-		</select>
-		<br>
-		To:
-		<select ng-model="sunHourTo"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
-		</select>
-		:
-		<select ng-model="sunMinTo"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
-		</select>
-	<br>
-	Select hour for holiday
-	<br>
-		From:
-		<select ng-model="holidayHourFrom"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
-		</select>
-		:
-		<select ng-model="holidayMinFrom"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
-		</select>
-		<br>
-		To:
-		<select ng-model="holidayHourTo"  ng-options="h.name for h in hours | orderBy: 'id'"  ng-required>
-		</select>
-		:
-		<select ng-model="holidayMinTo"  ng-options="m.name for m in minutes | orderBy: 'id'"  ng-required>
-		</select>
-	<br>
-	<input class="btn-primary" type="button" value="Save" ng-click="save()">
-</form>
-<br>
+
+	<td>
+		<script type="text/ng-template" id="sysCatTree.html">
+		  <span ng-style="catalogIndex == catalog && {'background-color': 'red'}">
+			<input class="btn-primary" type="checkbox" ng-click="selectSysCat(catalogIndex)">
+			{{catalogIndex.name}}
+		  </span>
+
+		  <ul ng-if="catalogIndex.allSubCatalogs">
+		      <li ng-repeat="catalogIndex in catalogIndex.allSubCatalogs" 
+		         ng-include="'sysCatTree.html'">
+		      </li>
+		  </ul>
+		</script>
+
+		<ul>
+		  <li ng-model="catalogIndex" ng-include="'sysCatTree.html'"></li>
+		</ul>
+	</td>
+</tr>
+</table>
 
 </div>

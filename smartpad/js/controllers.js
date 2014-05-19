@@ -327,6 +327,10 @@ smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
 			//$scope.newBranch = $scope.rootBranch;
 			//$scope.newBranch.new = true;
 			$scope.allStores = branchList.allStores;
+			if (branchList.sysCat) {
+				$scope.sysCat = branchList.sysCat;
+				$scope.catalogIndex = $scope.sysCat;
+			}
 			this.selectStore($scope.rootBranch);
 		};
 		$scope.addStore = function() {
