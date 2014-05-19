@@ -1,5 +1,6 @@
 <div ng-init="init()">
 
+<form>
 <table><tr>
 	<td>
 		{{rootBranch.name}}
@@ -14,7 +15,6 @@
 		</li> -->
 		
 		Store information
-		<form>
 			{{selectedStore.name}}
 			<br>
 			<input type="text" ng-model="name"  size="30"
@@ -101,17 +101,25 @@
 				</select>
 			<br>
 			<input class="btn-primary" type="button" value="Save" ng-click="save()">
-		</form>
 		<br>
 	</td>
 
 
 	<td>
 		<script type="text/ng-template" id="sysCatTree.html">
-		  <span ng-style="catalogIndex == catalog && {'background-color': 'red'}">
-			<input class="btn-primary" type="checkbox" ng-click="selectSysCat(catalogIndex)">
-			{{catalogIndex.name}}
-		  </span>
+<!-- 		  <span ng-style="catalogIndex == catalog && {'background-color': 'red'}"> ng-click="selectSysCat(catalogIndex)" ng-model="selectedSysCatId" ng-checked="selectedSysCatId == catalogIndex.id" ng-click="selectedSysCatId=catalogIndex.id"-->
+			<span
+				ng-style="selectedSysCatId == catalogIndex.id && selectedSysCatId.length == catalogIndex.id.length && {'background-color': 'red'}"
+				ng-click="changeSelectSysCat(catalogIndex)"
+			>
+				<input class="btn-primary" type="radio"
+					ng-model="selectedSysCatId"
+					ng-value="catalogIndex.id"
+					ng-click="changeSelectSysCat(catalogIndex)"
+				> 
+				{{catalogIndex.name}}
+	 		</span>
+<!-- 		  </span> -->
 
 		  <ul ng-if="catalogIndex.allSubCatalogs">
 		      <li ng-repeat="catalogIndex in catalogIndex.allSubCatalogs" 
@@ -119,12 +127,11 @@
 		      </li>
 		  </ul>
 		</script>
-
 		<ul>
 		  <li ng-model="catalogIndex" ng-include="'sysCatTree.html'"></li>
 		</ul>
 	</td>
 </tr>
 </table>
-
+</form>
 </div>

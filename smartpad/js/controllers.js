@@ -299,6 +299,7 @@ smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
 			$scope.email = store.email;
 			$scope.phone = store.phone;
 			$scope.addressLines = store.addressLines;
+			$scope.selectedSysCatId = store.rootCatalog.rootCatId;
 			
 			$scope.openHoursDes = store.openHours.desc;
 			$scope.dayHourFrom = $scope.hours[store.openHours.dailyHour.fromValue];
@@ -340,7 +341,12 @@ smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
 			console.log('rootStore');
 			console.log($scope.rootBranch);
 		}
-
+		$scope.changeSelectSysCat = function(sysCat) {
+			if (!sysCat) {
+				return;
+			}
+			$scope.selectedSysCatId = sysCat.id;
+		};
 		Branch.get({user: $rootScope.user.userNameText}, function(branchResult) {
 			$scope.getBranchCallBack(branchResult);
 		});
@@ -351,6 +357,7 @@ smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
 			$scope.selectedStore.email = $scope.email;
 			$scope.selectedStore.phone = $scope.phone;
 			$scope.selectedStore.addressLines = $scope.addressLines;
+			$scope.selectedStore.rootCatalog.rootCatId = $scope.selectedSysCatId;
 			
 			$scope.selectedStore.openHours.desc = $scope.openHoursDes;
 			$scope.selectedStore.openHours.dailyHour.fromValue = $scope.dayHourFrom.id;
