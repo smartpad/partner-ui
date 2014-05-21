@@ -1,8 +1,9 @@
 <div ng-controller="CatalogItemCtrl" ng-init="init()">
 	All catalog item
 	<br>
-	<li ng-repeat="catalogItem in catalog.allItems">
+	<li ng-repeat="catalogItem in $parent.catalog.allItems">
 	  <span ng-click="selectedItem(catalogItem)">{{catalogItem.valuesSingle.name}}</span>
+	  <input class="btn-primary" type="button" value="Delete" ng-click="delItem(catalogItem)">
 	</li>
 	
 	<br>
@@ -10,7 +11,7 @@
 	<input class="btn-primary" type="button" value="Add new item" ng-click="addCatItem()">
 	<!-- generate dynamic catItem form -->	
 	<form>
-		<li ng-repeat="catFields in catalog.allFields">
+		<li ng-repeat="catFields in $parent.catalog.allFields">
 			<span>
 				{{catFields.name}}
 				<span ng-if="catFields.fieldType == 'Text_ID'">

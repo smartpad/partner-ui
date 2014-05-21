@@ -1,10 +1,7 @@
 var catalogItemController = angular.module('catalogItemController', []);
 
-// use $rootScope.catalog
 catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'CatalogItem',
   function($scope, $rootScope, CatalogItem) {
-	//$scope.catalog = $rootScope.catalog;
-
 	$scope.init = function() {
 		$scope.catalogItem = {};
 		$scope.catalogItem.valuesSingle = {};
@@ -21,24 +18,28 @@ catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'Ca
 		$scope.catalogItem.id = catalogItem.id;
 		$scope.catalogItem.gps = catalogItem.gps;
 		$scope.catalogItem.branchName = catalogItem.branchName;
-		angular.forEach($rootScope.catalog.allFields, function(field, keyAsIndex) {
+		angular.forEach($scope.$parent.catalog.allFields, function(field, keyAsIndex) {
 			$scope.catalogItem.valuesSingle[field.id] = catalogItem.valuesSingle[field.id];
 			$scope.catalogItem.valuesMulti[field.id] = catalogItem.valuesMulti[field.id];
 		});
 	};
 	$scope.saveCatItem = function() {
-		CatalogItem.save($scope.catalogItem,
+		CatalogItem.save({user: $rootScope.user.userNameText, catalogId: $scope.$parent.catalog.id, sysCatalogItemId: ''}, 
+				$scope.catalogItem,
 				function(dataSuccess) {
 					// Update at parent cata $scope.getCatCallBack(dataSuccess);
+					$scope.$parent.getCatalogCallBack(dataSuccess);
+					$scope.clear();
 				},
 				function(dataFail) {
 				}
 			);
 	};
-	$scope.delStore = function(store) {
-		CatalogItem.delete({user: $rootScope.user.userNameText, catalogItemId: catalogItem.id},
+	$scope.delItem = function(catalogItem) {
+		CatalogItem.delete({user: $rootScope.user.userNameText, catalogItemId: catalogItem.id, catalogId: $scope.$parent.catalog.id, sysCatalogItemId: ''},
 			function(dataSuccess) {
 				// Update at parent cata $scope.getCatCallBack(dataSuccess);
+				$scope.$parent.getCatalogCallBack(dataSuccess);
 			},
 			function(dataFail) {
 			}

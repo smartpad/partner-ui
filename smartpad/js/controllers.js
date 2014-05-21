@@ -39,9 +39,6 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 		$scope.loadSubCatalog = function(catalog) {
 			this.clearForm();
 			$scope.catalog = catalog;
-			// add store for sub controller use
-			$rootScope.catalog = catalog;
-
 			$scope.catName = catalog.name;
 			$scope.catDes = catalog.des;
 			//$scope.readonly = $scope.catalog == $scope.rootCatalog;
