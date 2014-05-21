@@ -3,37 +3,7 @@
 /* Controllers */
 
 var smartpadControllers = angular.module('smartpadControllers', []);
-/*smartpadControllers.config(function($httpProvider) {
-	console.log($httpProvider.defaults);
-	delete $httpProvider.defaults.headers.common['X-Requested-With'];	
-});*/
 
-smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParams', 'User', '$location',
-  function($scope, $rootScope, $routeParams, User, $location) {
-    $scope.user = {};
-	$rootScope.user = {};
-    $scope.login = function() {		
-		var user = new User();
-		user.userNameText = $scope.user.userNameText;
-		user.passwordText = $scope.user.passwordText;
-		user.data = $scope.user;
-
-		user.$acc({}, function(data, headers)
-                {
-					if (data.success) {
-						$rootScope.user = data.data[0];
-						$location.path('/defaults');
-						return;
-					}
-                    alert('Account invalid: ' + data.data[0]);
-                },
-                function(err, headers)
-                {
-                	console.log(err)
-                    alert('Login failed: \'' + err + '\'!');
-                });
-    }
-  }]);
 smartpadControllers.controller('MainAppCtrl', ['$scope', '$rootScope', '$routeParams', '$location',
   function($scope, $rootScope, $routeParams, $location) {    
 	// TODO	
@@ -69,6 +39,9 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 		$scope.loadSubCatalog = function(catalog) {
 			this.clearForm();
 			$scope.catalog = catalog;
+			// add store for sub controller use
+			$rootScope.catalog = catalog;
+
 			$scope.catName = catalog.name;
 			$scope.catDes = catalog.des;
 			//$scope.readonly = $scope.catalog == $scope.rootCatalog;
@@ -229,9 +202,9 @@ smartpadControllers.controller('CatalogCtrl2', ['$scope', '$rootScope', 'Catalog
 }]);
   
 smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
-  function($scope, $rootScope, Branch) {
+  	function($scope, $rootScope, Branch) {
 		
-		$scope.init = function () {
+		$scope.init = function() {
 			$scope.hours = [25];
 			$scope.minutes = [61];
 			$scope.hours[0] = {id:0, name:'--'};
@@ -381,7 +354,7 @@ smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
 			$scope.selectedStore.openHours.holidayMin.toValue = $scope.holidayMinTo.id;
 
 			$scope.selectedStore.userName = $rootScope.user.userNameText;
-			// TODO cat, gps
+			// TODO gps
 			Branch.save($scope.selectedStore,
 				function(dataSuccess) {
 					$scope.getBranchCallBack(dataSuccess);

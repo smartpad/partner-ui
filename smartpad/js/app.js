@@ -4,10 +4,8 @@
 
 var smartpadApp = angular.module('smartpadApp', [
   'ngRoute',
-  'smartpadControllers',
-  'userServices',
-  'catalogServices',
-  'branchServices'
+  'smartpadControllers', 'loginController', 'catalogItemController',
+  'userServices', 'catalogServices', 'branchServices', 'catalogItemServices'
 ]);
 
 smartpadApp.config(['$routeProvider',
