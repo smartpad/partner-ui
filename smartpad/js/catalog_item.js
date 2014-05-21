@@ -1,7 +1,9 @@
 var catalogItemController = angular.module('catalogItemController', []);
 
+// inherit getCatalogCallBack, catalog
 catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'CatalogItem',
   function($scope, $rootScope, CatalogItem) {
+	$scope.isSysCat = false;
 	$scope.init = function() {
 		$scope.catalogItem = {};
 		$scope.catalogItem.valuesSingle = {};
@@ -24,7 +26,7 @@ catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'Ca
 		});
 	};
 	$scope.saveCatItem = function() {
-		CatalogItem.save({user: $rootScope.user.userNameText, catalogId: $scope.$parent.catalog.id, sysCatalogItemId: ''}, 
+		CatalogItem.save({user: $rootScope.user.userNameText, catalogId: $scope.$parent.catalog.id, sysCatalogItemId: $scope.$parent.isSysCat}, 
 				$scope.catalogItem,
 				function(dataSuccess) {
 					// Update at parent cata $scope.getCatCallBack(dataSuccess);
@@ -36,7 +38,7 @@ catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'Ca
 			);
 	};
 	$scope.delItem = function(catalogItem) {
-		CatalogItem.delete({user: $rootScope.user.userNameText, catalogItemId: catalogItem.id, catalogId: $scope.$parent.catalog.id, sysCatalogItemId: ''},
+		CatalogItem.delete({user: $rootScope.user.userNameText, catalogItemId: catalogItem.id, catalogId: $scope.$parent.catalog.id, sysCatalogItemId: $scope.$parent.isSysCat},
 			function(dataSuccess) {
 				// Update at parent cata $scope.getCatCallBack(dataSuccess);
 				$scope.$parent.getCatalogCallBack(dataSuccess);

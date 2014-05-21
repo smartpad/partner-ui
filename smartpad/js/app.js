@@ -4,7 +4,7 @@
 
 var smartpadApp = angular.module('smartpadApp', [
   'ngRoute',
-  'smartpadControllers', 'loginController', 'catalogItemController',
+  'smartpadControllers', 'loginController', 'catalogItemController', 'sysCatalogItemController',
   'userServices', 'catalogServices', 'branchServices', 'catalogItemServices'
 ]);
 
@@ -27,6 +27,11 @@ smartpadApp.config(['$routeProvider',
         //templateUrl: 'partials/catalog.html',
 		templateUrl: 'partials/catalogTree.html',
         controller: 'CatalogCtrl'
+      }).
+      when('/catalogItem', {
+          //templateUrl: 'partials/catalog.html',
+    	templateUrl: 'partials/sysCatalogItem.html',
+  		controller: 'SysCatalogItemCtrl'
       }).
       when('/branch', {
 		templateUrl: 'partials/branch.html',
