@@ -5,16 +5,15 @@
 	<br><br>
 	ALl sub-catalogs
 	<br>
-	<ul>
-		<li ng-repeat="subCatalog in catalog.allSubCatalogs"  class="catalog-list">
-			<span>
-				
-				<span class="catalog-name"  ng-click="loadSubCatalog(subCatalog)">{{subCatalog.name}}</span>
-				<input class="catalog-add-subcat-btn"  class="btn-primary" ng-click="changedSelectCatalogToAddSubCat(subCatalog, null)" type="button" value="Add sub cat">
-				<input class="catalog-update-btn" class="btn-primary" ng-click="changedSelectCatalogToAddSubCat(null, subCatalog)" type="button" value="Update">
-			</span>
-		</li>
-	</ul>
+		<li ng-repeat="subCatalog in catalog.allSubCatalogs">
+		<span>
+			
+			<href  ng-click="loadSubCatalog(subCatalog)">{{subCatalog.name}}</href>
+			<input class="btn-primary" ng-click="changedSelectCatalogToAddSubCat(subCatalog, null)" type="button" value="Add sub cat">
+			<input class="btn-primary" ng-click="changedSelectCatalogToAddSubCat(null, subCatalog)" type="button" value="Update">
+			<input class="btn-primary" ng-click="deleteCat(subCatalog)" type="button" value="Delete">
+		</span>
+	</li>
 	<br>
 </div>
 <br>

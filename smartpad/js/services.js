@@ -23,7 +23,19 @@ catalogServices.factory('Catalog', ['$resource',
 var catalogServices = angular.module('catalogServices', ['ngResource']);
 catalogServices.factory('Catalog', ['$resource',
   function($resource) {
-    return $resource('http://localhost:8090/catalog/:user/:catalogId', null);
+    return $resource('http://localhost:8090/catalog/:sys/:user/:catalogId', null,
+		    		{getItems: {
+						method: 'GET',
+						params: { pageSize: '@pageSize', pageNumber: '@pageNumber' },
+						isArray: false
+					}}
+    );
+}]);
+
+var catalogItemServices = angular.module('catalogItemServices', ['ngResource']);
+catalogItemServices.factory('CatalogItem', ['$resource',
+  function($resource) {
+    return $resource('http://localhost:8090/catalogItem/:user/:catalogItemId/:catalogId/:sysCatalogItemId', null);
 }]);
 
 var branchServices = angular.module('branchServices', ['ngResource']);

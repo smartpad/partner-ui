@@ -1,6 +1,55 @@
-<br>
-All catalog item
-<br>
-<li ng-repeat="catalogItem in catalog.allItems">
-  <span>{{catalogItem.valuesSingle.name}}</span>
-</li>
+<div ng-controller="CatalogItemCtrl" ng-init="init()">
+	All catalog item
+	<br>
+	<li ng-repeat="catalogItem in $parent.catalog.allItems">
+	  <span ng-click="selectedItem(catalogItem)">
+	  	<span ng-repeat="catFields in $parent.catalog.allFields">
+	  		<span ng-if="catalogItem.valuesSingle != null">
+				{{catalogItem.valuesSingle[catFields.id]}}
+			</span>
+			<span ng-if="catalogItem.valuesMulti != null">
+				{{catalogItem.valuesMulti[catFields.id]}}
+			</span>
+	  	</li>
+	  </span>
+	  <input class="btn-primary" type="button" value="Delete" ng-click="delItem(catalogItem)">
+	</li>
+	
+	<br>
+	<span>
+		<span ng-if="paging && paging.allowFirst">First</span>
+		
+		<span ng-if="paging && paging.allowLast">Last</span>
+	</span>
+	<br>
+	
+	<input class="btn-primary" type="button" value="Add new item" ng-click="addCatItem()">
+	<!-- generate dynamic catItem form -->	
+	<form>
+		<li ng-repeat="catFields in $parent.catalog.allFields">
+			<span>
+				{{catFields.name}}
+				<span ng-if="catFields.fieldType == 'Text_ID'">
+					<input type="text" ng-model="catalogItem.valuesSingle[catFields.id]"  size="30" placeholder="add {{catFields.name}} here" />
+				</span>
+				<span ng-if="catFields.fieldType == 'Text_Name'">
+					<input type="text" ng-model="catalogItem.valuesSingle[catFields.id]"  size="30" placeholder="add {{catFields.name}} here" />
+				</span>
+				<span ng-if="catFields.fieldType == 'Text_Desc'">
+					<input type="text" ng-model="catalogItem.valuesSingle[catFields.id]"  size="100" placeholder="add {{catFields.name}} here" />
+				</span>
+				<span ng-if="catFields.fieldType == Boolean">
+					
+				</span>
+				<span ng-if="catFields.fieldType == Int">
+					
+				</span>
+				<span ng-if="catFields.fieldType == Decimal">
+					
+				</span>
+			</span>
+		</li>
+		<input class="btn-primary" type="button" value="Save" ng-click="saveCatItem()">
+	</form>
+	
+</div>
