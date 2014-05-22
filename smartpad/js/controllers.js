@@ -13,8 +13,9 @@ smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User'
     // TODO
   }]);
 
-smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog',
-	function($scope, $rootScope, Catalog) {
+smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog', 'CatalogItem',
+	function($scope, $rootScope, Catalog, CatalogItem) {
+		$scope.isSysCat = false;
 		$scope.clearForm = function() {
 			$scope.catalog = $scope.rootCatalog;
 			$scope.action = null;//null, "addsubcat"
@@ -37,10 +38,17 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			$scope.getCatalogCallBack(catalogResult);
 		});
 		$scope.loadSubCatalog = function(catalog) {
-			this.clearForm();
+			/*var paging = {};
+			paging.pageSize = -1;
+			paging.pageNumber = 1;*/
+			$scope.clearForm();
 			$scope.catalog = catalog;
 			$scope.catName = catalog.name;
 			$scope.catDes = catalog.des;
+			Catalog.getItems({user: $rootScope.user.userNameText, catalogId: catalog.id, sys: false, pageSize: -1, pageNumber: 1}, function(catalogItemsResult) {
+				$scope.catalog.allItems = catalogItemsResult.allItems;
+				$scope.paging = catalogItemsResult.paging;
+			});
 			//$scope.readonly = $scope.catalog == $scope.rootCatalog;
 		};
 		$scope.selectToAddSubCat = function(parentCatalogOfNewSubCat) {

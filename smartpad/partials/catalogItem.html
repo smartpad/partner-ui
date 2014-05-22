@@ -2,10 +2,25 @@
 	All catalog item
 	<br>
 	<li ng-repeat="catalogItem in $parent.catalog.allItems">
-	  <span ng-click="selectedItem(catalogItem)">{{catalogItem.valuesSingle.name}}</span>
+	  <span ng-click="selectedItem(catalogItem)">
+	  	<span ng-repeat="catFields in $parent.catalog.allFields">
+	  		<span ng-if="catalogItem.valuesSingle != null">
+				{{catalogItem.valuesSingle[catFields.id]}}
+			</span>
+			<span ng-if="catalogItem.valuesMulti != null">
+				{{catalogItem.valuesMulti[catFields.id]}}
+			</span>
+	  	</li>
+	  </span>
 	  <input class="btn-primary" type="button" value="Delete" ng-click="delItem(catalogItem)">
 	</li>
 	
+	<br>
+	<span>
+		<span ng-if="paging && paging.allowFirst">First</span>
+		
+		<span ng-if="paging && paging.allowLast">Last</span>
+	</span>
 	<br>
 	
 	<input class="btn-primary" type="button" value="Add new item" ng-click="addCatItem()">
