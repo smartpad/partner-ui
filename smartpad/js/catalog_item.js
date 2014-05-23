@@ -9,6 +9,9 @@ catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'Ca
 		$scope.catalogItem.valuesSingle = {};
 		$scope.catalogItem.valuesMulti = {};
 	};
+	$scope.$on('clear-event', function(event) {
+		$scope.clear();
+	});
 	$scope.clear = function() {
 		this.init();
 	};
