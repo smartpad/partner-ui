@@ -8,6 +8,7 @@ catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'Ca
 		$scope.catalogItem = {};
 		$scope.catalogItem.valuesSingle = {};
 		$scope.catalogItem.valuesMulti = {};
+		$scope.catalogItem.branchName = $scope.$parent.branchNameDefault;
 	};
 	$scope.$on('clear-event', function(event) {
 		$scope.clear();

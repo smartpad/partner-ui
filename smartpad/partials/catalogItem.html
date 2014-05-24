@@ -10,22 +10,26 @@
 			<span ng-if="catalogItem.valuesMulti != null">
 				{{catalogItem.valuesMulti[catFields.id]}}
 			</span>
-	  	</li>
+		</span>
+		<input class="btn-primary" type="button" value="Delete" ng-click="delItem(catalogItem)">
 	  </span>
-	  <input class="btn-primary" type="button" value="Delete" ng-click="delItem(catalogItem)">
 	</li>
 	
 	<br>
 	<span>
 		<span ng-if="paging && paging.allowFirst">First</span>
-		
+		<span ng-repeat="pageNumber in $parent.pageNumbers">
+			<href ng-click="$parent.pagingItems(pageNumber)">{{pageNumber}}</href>
+		</span>		
 		<span ng-if="paging && paging.allowLast">Last</span>
 	</span>
 	<br>
 	
 	<input class="btn-primary" type="button" value="Add new item" ng-click="addCatItem()">
 	<!-- generate dynamic catItem form -->	
-	<form>
+	<form ng-if="catalogItem && catalogItem.branchName">
+		Branch Name:
+		<input type="text" ng-model="catalogItem.branchName"  size="30" placeholder="add branch name here" />
 		<li ng-repeat="catFields in $parent.catalog.allFields">
 			<span>
 				{{catFields.name}}

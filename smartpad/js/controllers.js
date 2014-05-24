@@ -38,6 +38,7 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			   currCatalog.index = keyAsIndex;
 			 });
 			this.clearForm();
+			this.loadSubCatalog($scope.rootCatalog);
 		};
 		Catalog.get({user: $rootScope.user.userNameText}, function(catalogResult) {
 			$scope.getCatalogCallBack(catalogResult);
@@ -50,17 +51,25 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			$scope.catalog = catalog;
 			$scope.catName = catalog.name;
 			$scope.catDes = catalog.des;
+			this.pagingItems(1);
+			//$scope.readonly = $scope.catalog == $scope.rootCatalog;
+		};
+		$scope.pagingItems = function(pageNumber) {
 			if (!$scope.paging) {
 				$scope.paging = {};
 				$scope.paging.pageSize = 2;
-				$scope.paging.pageNumber = 1;
 			}
-			Catalog.getItems({user: $rootScope.user.userNameText, catalogId: catalog.id, sys: false, pageSize: $scope.paging.pageSize, pageNumber: $scope.paging.pageNumber}, function(catalogItemsResult) {
+			$scope.paging.pageNumber = pageNumber;
+			Catalog.getItems({user: $rootScope.user.userNameText, catalogId: $scope.catalog.id, sys: false, pageSize: $scope.paging.pageSize, pageNumber: $scope.paging.pageNumber}, function(catalogItemsResult) {
 				$scope.catalog.allItems = catalogItemsResult.allItems;
 				$scope.paging = catalogItemsResult.paging;
+				$scope.branchNameDefault = catalogItemsResult.branchName;
+				$scope.pageNumbers = [];
+				for (var i = $scope.paging.firstPageNumber; i < $scope.paging.lastPageNumber + 1; i++) {
+					$scope.pageNumbers.push(i);
+				}
 			});
-			//$scope.readonly = $scope.catalog == $scope.rootCatalog;
-		};
+		}
 		$scope.selectToAddSubCat = function(parentCatalogOfNewSubCat) {
 			this.clearForm();
 			$scope.catalog = parentCatalogOfNewSubCat;
