@@ -4,37 +4,50 @@
 
 var smartpadApp = angular.module('smartpadApp', [
   'ngRoute',
-  'smartpadControllers',
-  'userServices',
-  'catalogServices',
-  'branchServices'
+  'smartpadControllers', 'loginController', 'catalogItemController', 'sysCatalogItemController',
+  'userServices', 'catalogServices', 'branchServices', 'catalogItemServices',
+  'ui.router'
 ]);
 
-smartpadApp.config(['$routeProvider',
-  function($routeProvider) {
-    $routeProvider.
-      when('/login', {
-        templateUrl: 'partials/login.html',
-        controller: 'LoginCtrl'
-      }).
-      when('/registry', {
-        templateUrl: 'partials/registry.html',
-        controller: 'RegistryCtrl'
-      }).
-	  when('/defaults', {
+smartpadApp.config(['$stateProvider', '$urlRouterProvider',
+  function($stateProvider, $urlRouterProvider) {
+  
+    $urlRouterProvider.otherwise("/login");
+    
+    $stateProvider.
+    	state("defaults.catalogItem", {
+      	url: "/catalogItem",
+        templateUrl: 'partials/sysCatalogItem.html',
+  		controller: 'SysCatalogItemCtrl'
+        }).
+        
+       state("defaults", {
+       url: "/defaults",
         templateUrl: 'partials/welcome.html',
         controller: 'MainAppCtrl'
-      }).
-	  when('/catalog', {
-        //templateUrl: 'partials/catalog.html',
-		templateUrl: 'partials/catalogTree.html',
-        controller: 'CatalogCtrl'
-      }).
-      when('/branch', {
-		templateUrl: 'partials/branch.html',
+        }).
+        
+        state("registry", {
+        url: "/registry",
+        templateUrl: 'partials/registry.html',
+        controller: 'RegistryCtrl'
+        }).
+        
+        state("defaults.branch", {
+        url: "/branch",
+        templateUrl: 'partials/branch.html',
         controller: 'BranchCtrl'
-      }).
-      otherwise({
-        redirectTo: '/login'
-      });
+        }).
+        
+        state("login", {
+        url: "/login",
+        templateUrl: 'partials/login.html',
+        controller: 'LoginCtrl'
+        }).
+        
+        state("defaults.catalog", {
+        url: "/catalog",
+        templateUrl: "partials/catalogTree.html",
+        controller: 'CatalogCtrl'
+        });
   }]);

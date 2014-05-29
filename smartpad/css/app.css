@@ -137,10 +137,11 @@ h1 {
 	text-decoration: none;
 }
 
-.item-header:HOVER {
-	text-decoration: underline;
-}
 .item-header.on, .item-header:HOVER {
 	background-color: #eee;
 }
-
+.item-header:HOVER {
+	background-color: #eee;
+	text-decoration: underline;
+	cursor: pointer;
+}

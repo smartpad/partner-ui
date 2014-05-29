@@ -2,17 +2,13 @@
   Welcome {{user.userNameText}} !!!
 </div>
 <br>
-<a href="#/branch"> Branch </a>
-<br>
+<div>
 <div id="items-list-header" ng-model="template">
-	<div class="item-header"><a href="#/catalog"> Catalog </a></div>
-	<div class="item-header"><a href="#/branch"> Branch </a></div>
+	<div class="item-header" ui-sref-active="on" ui-sref="defaults.catalog"><a href=""> Catalog </a></div>
+	<div class="item-header" ui-sref-active="on" ui-sref="defaults.branch"><a href=""> Branch </a></div>
+	<div class="item-header" ui-sref-active="on" ui-sref="defaults.catalogItem"><a href=""> Catalog Item </a></div>
 </div>
-
-<!-- <div id="items-list-header" ng-model="template">
-	<div class="item-header"><a href="#/catalog"> Catalog </a></div>
-	<div class="item-header"><a href="#/branch"> Branch </a></div>
-</div> -->
-
 <br>
-<a href="#/catalogItem"> Catalog Item </a>
+
+ <div ui-view class="container slide" style="padding-top: 80px;"></div>
+</div>

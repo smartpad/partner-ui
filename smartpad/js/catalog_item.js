@@ -8,7 +8,11 @@ catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'Ca
 		$scope.catalogItem = {};
 		$scope.catalogItem.valuesSingle = {};
 		$scope.catalogItem.valuesMulti = {};
+		$scope.catalogItem.branchName = $scope.$parent.branchNameDefault;
 	};
+	$scope.$on('clear-event', function(event) {
+		$scope.clear();
+	});
 	$scope.clear = function() {
 		this.init();
 	};
@@ -26,7 +30,8 @@ catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'Ca
 		});
 	};
 	$scope.saveCatItem = function() {
-		CatalogItem.save({user: $rootScope.user.userNameText, catalogId: $scope.$parent.catalog.id, sysCatalogItemId: $scope.$parent.isSysCat}, 
+		CatalogItem.save({user: $rootScope.user.userNameText, catalogId: $scope.$parent.catalog.id, 
+						sysCatId: $scope.$parent.selectedSysCatId, isSysCat: $scope.$parent.isSysCat}, 
 				$scope.catalogItem,
 				function(dataSuccess) {
 					// Update at parent cata $scope.getCatCallBack(dataSuccess);
@@ -38,7 +43,8 @@ catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'Ca
 			);
 	};
 	$scope.delItem = function(catalogItem) {
-		CatalogItem.delete({user: $rootScope.user.userNameText, catalogItemId: catalogItem.id, catalogId: $scope.$parent.catalog.id, sysCatalogItemId: $scope.$parent.isSysCat},
+		CatalogItem.delete({user: $rootScope.user.userNameText, catalogItemId: catalogItem.id, catalogId: $scope.$parent.catalog.id,
+							isSysCat: $scope.$parent.isSysCat},
 			function(dataSuccess) {
 				// Update at parent cata $scope.getCatCallBack(dataSuccess);
 				$scope.$parent.getCatalogCallBack(dataSuccess);

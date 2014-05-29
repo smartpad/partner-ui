@@ -3,42 +3,8 @@
 /* Controllers */
 
 var smartpadControllers = angular.module('smartpadControllers', ['LocalStorageModule']);
-
 smartpadControllers.config(['localStorageServiceProvider', function(localStorageServiceProvider){
-	/*localStorageServiceProvider.setPrefix('demoPrefix');*/
 }]);
-
-
-smartpadControllers.controller('LoginCtrl', ['$scope', '$rootScope','$routeParams', 'User', '$location', 'localStorageService',
-  function($scope, $rootScope, $routeParams, User, $location, localStorageService) {
-    $scope.user = {};
-	$rootScope.user = {};
-
-    $scope.login = function() {		
-		var user = new User();
-		user.userNameText = $("#username").val();//$scope.user.userNameText;
-		user.passwordText = $("#password").val();//$scope.user.passwordText;
-		user.data = $scope.user;
-		
-		user.$acc({}, function(data, headers)
-                {alert(JSON.stringify(data));
-					if (data.success) {
-						$rootScope.user = data.data[0];
-						localStorageService.set('user', $rootScope.user);
-						localStorageService.set('userNameText', data.data[0].userNameText);
-						$location.path('/defaults');
-						return;
-					}
-                    alert('Account invalid: ' + data.data[0]);
-                },
-                function(err, headers)
-                {
-                	console.log(err)
-                	console.log(err)
-                    alert('Login failed: \'' + err + '\'!');
-                });
-    }
-  }]);
 smartpadControllers.controller('MainAppCtrl', ['$scope', '$rootScope', '$routeParams', '$location',
   function($scope, $rootScope, $routeParams, $location) {    
 	// TODO	
@@ -48,16 +14,20 @@ smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User'
     // TODO
   }]);
 
-smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog', 'localStorageService',
-	function($scope, $rootScope, Catalog, localStorageService) {
-	
-	$rootScope.user = localStorageService.get('user');
+smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog', 'CatalogItem', 'localStorageService',
+	function($scope, $rootScope, Catalog, CatalogItem, localStorageService) {
+		$scope.isSysCat = false;
+		$rootScope.user = localStorageService.get('user');
 		$scope.clearForm = function() {
 			$scope.catalog = $scope.rootCatalog;
 			$scope.action = null;//null, "addsubcat"
 			$scope.catName = null;
 			$scope.catDes = null;
 			//$scope.readonly = true;
+
+			$scope.$broadcast('clear-event');
+	  		/*$scope.$on('clear-event-response', function () {
+			});*/
 		};
 
 		$scope.getCatalogCallBack = function(catalog) {
@@ -69,19 +39,37 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			   currCatalog.index = keyAsIndex;
 			 });
 			this.clearForm();
+			this.loadSubCatalog($scope.rootCatalog);
 		};
-		
-		
 		Catalog.get({user: $rootScope.user.userNameText}, function(catalogResult) {
 			$scope.getCatalogCallBack(catalogResult);
 		});
 		$scope.loadSubCatalog = function(catalog) {
-			this.clearForm();
+			/*var paging = {};
+			paging.pageSize = -1;
+			paging.pageNumber = 1;*/
+			$scope.clearForm();
 			$scope.catalog = catalog;
 			$scope.catName = catalog.name;
 			$scope.catDes = catalog.des;
-			//$scope.readonly = $scope.catalog == $scope.rootCatalog;
+			this.pagingItems(1);
 		};
+		$scope.pagingItems = function(pageNumber) {
+			if (!$scope.paging) {
+				$scope.paging = {};
+				$scope.paging.pageSize = 2;
+			}
+			$scope.paging.pageNumber = pageNumber;
+			Catalog.getItems({user: $rootScope.user.userNameText, catalogId: $scope.catalog.id, sys: false, pageSize: $scope.paging.pageSize, pageNumber: $scope.paging.pageNumber}, function(catalogItemsResult) {
+				$scope.catalog.allItems = catalogItemsResult.allItems;
+				$scope.paging = catalogItemsResult.paging;
+				$scope.branchNameDefault = catalogItemsResult.branchName;
+				$scope.pageNumbers = [];
+				for (var i = $scope.paging.firstPageNumber; i < $scope.paging.lastPageNumber + 1; i++) {
+					$scope.pageNumbers.push(i);
+				}
+			});
+	}
 		$scope.selectToAddSubCat = function(parentCatalogOfNewSubCat) {
 			this.clearForm();
 			$scope.catalog = parentCatalogOfNewSubCat;
@@ -139,24 +127,24 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 		
 }]);
 
-smartpadControllers.controller('CatalogCtrl2', ['$scope', '$rootScope', 'Catalog', 'localStorageService',
-  function($scope, $rootScope, Catalog, localStorageService) {
-	$rootScope.user = localStorageService.get('user');
-	 $scope.getCatalogCallBack = function(catalog) {
-			$scope.rootCatalog = catalog.data[0];
-			$scope.rootCatalog.name = "Catalog";
-			$scope.rootCatalog.root = true;
-			angular.forEach($scope.rootCatalog.allSubCatalogs, function(currCatalog, keyAsIndex) {
-			   currCatalog.index = keyAsIndex;
-			 });
-			$scope.catalog = $scope.rootCatalog;
-			$scope.catalogIndex = $scope.rootCatalog;
-			$scope.selectedCatalogToAddSubCat = null;//$scope.rootCatalog;//{id: null, name: "", des: "", checkedToAddSubCat: false};
-			$scope.catToEdit = null;
-			$scope.catName = null;
-			$scope.catDes = null;
-			$scope.readonly = true;
-		};
+smartpadControllers.controller('CatalogCtrl2', ['$scope', '$rootScope', 'Catalog',
+  function($scope, $rootScope, Catalog) {
+    
+    $scope.getCatalogCallBack = function(catalog) {
+		$scope.rootCatalog = catalog.data[0];
+		$scope.rootCatalog.name = "Catalog";
+		$scope.rootCatalog.root = true;
+		angular.forEach($scope.rootCatalog.allSubCatalogs, function(currCatalog, keyAsIndex) {
+		   currCatalog.index = keyAsIndex;
+		 });
+		$scope.catalog = $scope.rootCatalog;
+		$scope.catalogIndex = $scope.rootCatalog;
+		$scope.selectedCatalogToAddSubCat = null;//$scope.rootCatalog;//{id: null, name: "", des: "", checkedToAddSubCat: false};
+		$scope.catToEdit = null;
+		$scope.catName = null;
+		$scope.catDes = null;
+		$scope.readonly = true;
+	};
 	
 	Catalog.get({user: $rootScope.user.userNameText}, function(catalog) {
 		$scope.getCatalogCallBack(catalog);
@@ -236,11 +224,11 @@ smartpadControllers.controller('CatalogCtrl2', ['$scope', '$rootScope', 'Catalog
 		$scope.readonly = true;
 	};
 }]);
-
+  
 smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',  'localStorageService',
   function($scope, $rootScope, Branch, localStorageService) {
 	$rootScope.user = localStorageService.get('user');
-		$scope.init = function () {
+		$scope.init = function() {
 			$scope.hours = [25];
 			$scope.minutes = [61];
 			$scope.hours[0] = {id:0, name:'--'};
