@@ -82,3 +82,66 @@ ul.specs dt {
 h1 {
   border-bottom: 1px solid gray;
 }
+
+.catalog-list {
+	list-style: none;
+	padding: 5px;
+}
+
+.catalog-name {
+	display: inline-block;
+	width: 200px;
+}
+.catalog-name:HOVER {
+	background-color: #ccc;
+	cursor: pointer;
+}
+.catalog-add-subcat-btn {
+	
+}
+
+.catalog-update-btn {
+	
+}
+
+#login-form {
+	border: 1px solid #CCCCCC;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    width: 200px;
+}
+
+#username, #password {
+	margin-bottom: 10px;
+	padding: 5px;
+}
+
+#login-btn{
+    font-weight: bold;
+    margin: auto;
+    padding: 0 20px;
+}
+
+#items-list-header {
+	height: 40px;
+}
+
+.item-header {
+	display: inline-block;
+	padding: 10px 15px;
+	border-right: solid 1px #999;
+}
+
+.item-header a {
+	text-decoration: none;
+}
+
+.item-header.on, .item-header:HOVER {
+	background-color: #eee;
+}
+.item-header:HOVER {
+	background-color: #eee;
+	text-decoration: underline;
+	cursor: pointer;
+}

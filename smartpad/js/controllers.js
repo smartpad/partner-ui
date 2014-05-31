@@ -2,8 +2,9 @@
 
 /* Controllers */
 
-var smartpadControllers = angular.module('smartpadControllers', []);
-
+var smartpadControllers = angular.module('smartpadControllers', ['LocalStorageModule']);
+smartpadControllers.config(['localStorageServiceProvider', function(localStorageServiceProvider){
+}]);
 smartpadControllers.controller('MainAppCtrl', ['$scope', '$rootScope', '$routeParams', '$location',
   function($scope, $rootScope, $routeParams, $location) {    
 	// TODO	
@@ -13,10 +14,10 @@ smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User'
     // TODO
   }]);
 
-smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog', 'CatalogItem',
-	function($scope, $rootScope, Catalog, CatalogItem) {
+smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog', 'CatalogItem', 'localStorageService',
+	function($scope, $rootScope, Catalog, CatalogItem, localStorageService) {
 		$scope.isSysCat = false;
-
+		$rootScope.user = localStorageService.get('user');
 		$scope.clearForm = function() {
 			$scope.catalog = $scope.rootCatalog;
 			$scope.action = null;//null, "addsubcat"
@@ -52,7 +53,6 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			$scope.catName = catalog.name;
 			$scope.catDes = catalog.des;
 			this.pagingItems(1);
-			//$scope.readonly = $scope.catalog == $scope.rootCatalog;
 		};
 		$scope.pagingItems = function(pageNumber) {
 			if (!$scope.paging) {
@@ -69,7 +69,7 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 					$scope.pageNumbers.push(i);
 				}
 			});
-		}
+	}
 		$scope.selectToAddSubCat = function(parentCatalogOfNewSubCat) {
 			this.clearForm();
 			$scope.catalog = parentCatalogOfNewSubCat;
@@ -225,9 +225,9 @@ smartpadControllers.controller('CatalogCtrl2', ['$scope', '$rootScope', 'Catalog
 	};
 }]);
   
-smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
-  	function($scope, $rootScope, Branch) {
-		
+smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',  'localStorageService',
+  function($scope, $rootScope, Branch, localStorageService) {
+	$rootScope.user = localStorageService.get('user');
 		$scope.init = function() {
 			$scope.hours = [25];
 			$scope.minutes = [61];
@@ -378,7 +378,7 @@ smartpadControllers.controller('BranchCtrl', ['$scope', '$rootScope', 'Branch',
 			$scope.selectedStore.openHours.holidayMin.toValue = $scope.holidayMinTo.id;
 
 			$scope.selectedStore.userName = $rootScope.user.userNameText;
-			// TODO gps
+			// TODO cat, gps
 			Branch.save($scope.selectedStore,
 				function(dataSuccess) {
 					$scope.getBranchCallBack(dataSuccess);
