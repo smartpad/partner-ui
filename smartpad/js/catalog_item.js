@@ -16,22 +16,27 @@ catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'Ca
 	$scope.clear = function() {
 		this.init();
 	};
-	$scope.addCatItem = function() {
+	/*$scope.addCatItem = function() {
 		this.clear();
-	};
+	};*/
 	$scope.selectedItem = function(catalogItem) {
-		this.init();
+		this.clear();
 		$scope.catalogItem.id = catalogItem.id;
 		$scope.catalogItem.gps = catalogItem.gps;
 		$scope.catalogItem.branchName = catalogItem.branchName;
-		angular.forEach($scope.$parent.catalog.allFields, function(field, keyAsIndex) {
+		angular.forEach($scope.$parent.allFields, function(field, keyAsIndex) {
 			$scope.catalogItem.valuesSingle[field.id] = catalogItem.valuesSingle[field.id];
 			$scope.catalogItem.valuesMulti[field.id] = catalogItem.valuesMulti[field.id];
 		});
 	};
 	$scope.saveCatItem = function() {
+		// add param selectedSubSys.id
+		var subSysCatId = null;
+		if ($parent.selectedSubSys) {
+			subSysCatId = $parent.selectedSubSys.id;
+		}
 		CatalogItem.save({user: $rootScope.user.userNameText, catalogId: $scope.$parent.catalog.id, 
-						sysCatId: $scope.$parent.selectedSysCatId, isSysCat: $scope.$parent.isSysCat}, 
+						sysCatId: subSysCatId/*$scope.$parent.selectedSysCatId*/, isSysCat: $scope.$parent.isSysCat}, 
 				$scope.catalogItem,
 				function(dataSuccess) {
 					// Update at parent cata $scope.getCatCallBack(dataSuccess);
