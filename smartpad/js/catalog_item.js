@@ -32,11 +32,11 @@ catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'Ca
 	$scope.saveCatItem = function() {
 		// add param selectedSubSys.id
 		var subSysCatId = null;
-		if ($parent.selectedSubSys) {
+		if ($scope.$parent.selectedSubSys) {
 			subSysCatId = $parent.selectedSubSys.id;
 		}
 		CatalogItem.save({user: $rootScope.user.userNameText, catalogId: $scope.$parent.catalog.id, 
-						sysCatId: subSysCatId/*$scope.$parent.selectedSysCatId*/, isSysCat: $scope.$parent.isSysCat}, 
+						sysCatId: subSysCatId/*$scope.$parent.selectedSysCatId*//*, isSysCat: $scope.$parent.isSysCat*/}, 
 				$scope.catalogItem,
 				function(dataSuccess) {
 					// Update at parent cata $scope.getCatCallBack(dataSuccess);
