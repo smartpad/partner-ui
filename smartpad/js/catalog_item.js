@@ -33,7 +33,7 @@ catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'Ca
 		// add param selectedSubSys.id
 		var subSysCatId = null;
 		if ($scope.$parent.selectedSubSys) {
-			subSysCatId = $parent.selectedSubSys.id;
+			subSysCatId = $scope.$parent.selectedSubSys.id;
 		}
 		CatalogItem.save({user: $rootScope.user.userNameText, catalogId: $scope.$parent.catalog.id, 
 						sysCatId: subSysCatId/*$scope.$parent.selectedSysCatId*//*, isSysCat: $scope.$parent.isSysCat*/}, 
