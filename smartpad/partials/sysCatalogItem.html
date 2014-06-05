@@ -15,10 +15,13 @@
 		</li>
 	</ul>
 </script>
-<ul>
-  <li ng-model="catalogIndex" ng-include="'sysCatTree.html'"></li>
-</ul>
 
-<br>
-
-<div ng-include src=" '/smartpad/partials/catalogItem.html' "></div>
+<div id="rootDiv" ng-init="init(true)">
+	<ul>
+	  <li ng-model="catalogIndex" ng-include="'sysCatTree.html'"></li>
+	</ul>
+	
+	<br>
+	
+	<div ng-include src=" '/smartpad/partials/catalogItem.html' "></div>
+</div>

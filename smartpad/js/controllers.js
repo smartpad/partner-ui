@@ -16,8 +16,11 @@ smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User'
 
 smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog', 'CatalogItem', 'localStorageService',
 	function($scope, $rootScope, Catalog, CatalogItem, localStorageService) {
-		$scope.isSysCat = false;
 		$rootScope.user = localStorageService.get('user');
+
+		$scope.init = function(isSysCat) {
+			$scope.isSysCat = isSysCat;
+		};
 		$scope.clearForm = function() {
 			$scope.catalog = $scope.rootCatalog;
 			$scope.action = null;//null, "addsubcat"
@@ -67,6 +70,10 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			this.pagingItems(1);
 		};
 		$scope.loadSubSysCat = function(subSysCat) {
+			if ($scope.isSysCat) {
+				return;
+			}
+			
 			$scope.selectedSubSys = subSysCat;
 			$scope.branchNameDefault = $scope.selectedSubSys.branchName;
 			$scope.allFields = $scope.selectedSubSys.allFields;
@@ -92,12 +99,18 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			});
 		}
 		$scope.selectToAddSubCat = function(parentCatalogOfNewSubCat) {
+			if ($scope.isSysCat) {
+				return;
+			}
 			this.clearForm();
 			$scope.catalog = parentCatalogOfNewSubCat;
 			//$scope.readonly = $scope.catalog == $scope.rootCatalog;
 			$scope.action = "addsubcat";
 		};
 		$scope.updateCatalog = function() {
+			if ($scope.isSysCat) {
+				return;
+			}
 			//var editCat = null;
 			if ($scope.action == null) {
 				$scope.catalog.name = $scope.catName;
@@ -132,11 +145,17 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			}
 		};
 		$scope.addSubCatalog = function() {
+			if ($scope.isSysCat) {
+				return;
+			}
 			//this.selectToAddSubCat($scope.catalog);
 			$scope.action = "addsubcat";
 			this.updateCatalog();
 		};
 		$scope.deleteCat = function(catDelete) {
+			if ($scope.isSysCat) {
+				return;
+			}
 			Catalog.delete({user: $rootScope.user.userNameText, catalogId: catDelete.id},
 				function(dataSuccess) {
 					$scope.getCatalogCallBack(dataSuccess);
