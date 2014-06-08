@@ -88,7 +88,7 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 				$scope.paging.pageSize = 2;
 			}
 			$scope.paging.pageNumber = pageNumber;
-			Catalog.getItems({user: $rootScope.user.userNameText, catalogId: $scope.catalog.id, sys: false, pageSize: $scope.paging.pageSize, pageNumber: $scope.paging.pageNumber}, function(catalogItemsResult) {
+			Catalog.getItems({user: $rootScope.user.userNameText, catalogId: $scope.catalog.id, pageSize: $scope.paging.pageSize, pageNumber: $scope.paging.pageNumber}, function(catalogItemsResult) {
 				$scope.catalog.allItems = catalogItemsResult.allItems;
 				$scope.paging = catalogItemsResult.paging;
 				$scope.pageNumbers = [];
