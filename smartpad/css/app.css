@@ -104,7 +104,7 @@ h1 {
 	
 }
 
-#login-form {
+#login-form, #register-form {
 	border: 1px solid #CCCCCC;
     margin: auto;
     padding: 20px;
@@ -112,7 +112,7 @@ h1 {
     width: 200px;
 }
 
-#username, #password {
+.username, .password {
 	margin-bottom: 10px;
 	padding: 5px;
 }

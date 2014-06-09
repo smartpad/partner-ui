@@ -1,10 +1,11 @@
 <div id="login-form">  
   <form ng-submit="login()">
-	<input id="username" type="text" ng-model="user.userNameText"  size="30"
+	<input id="username" class="username" type="text" ng-model="user.userNameText"  size="30"
 		   placeholder="add user name here">
 	<br/>
-	<input  id="password" type="password" ng-model="user.passwordText"  size="30"
+	<input  id="password" class="password" type="password" ng-model="user.passwordText"  size="30"
 		   placeholder="add password here"> <br/>
-	<input id="login-btn" class="btn-primary" type="submit" value="Login">
+	<input id="login-btn" class="btn-primary" type="submit" value="Login"/>
+	<input id="register-btn" class="btn-primary" type="button" value="Register" ui-sref="register"/>
   </form>
 </div>

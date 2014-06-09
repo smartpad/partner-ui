@@ -43,3 +43,15 @@ branchServices.factory('Branch', ['$resource',
   function($resource) {
     return $resource('http://localhost:8090/branch/:user/:branchId', null);
 }]);
+
+var registerServices = angular.module('registerServices', ['ngResource']);
+registerServices.factory('Register', ['$http', '$resource', function($http, $resource) {
+    return {registerUser : function(user) {
+    	return $http({
+            'url' : 'http://localhost:8090/register',
+            'method' : 'POST',
+            'headers': {'Content-Type' : 'application/json'},
+            'data' : user
+        });
+	}};
+}]);

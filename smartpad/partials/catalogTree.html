@@ -12,50 +12,46 @@
   </ul>
 </script>
 
-<!-- <div>
-Root catalog
-<br> 
-{{rootCatalog.name}}
-<br>
-{{rootCatalog.des}}
-</div> -->
+<div id="rootDiv" ng-init="init(false)">
 
-<table>
-<tr>
-<td>
-	<ul>
-	  <li ng-model="catalogIndex" ng-include="'catalogTree.html'"></li>
-	</ul>
-</td>
-<td align="top" valign="top">
-<span>
-	<!-- <div ng-if="selectedCatalogToAddSubCat != null">
-		Parent catalog to addSubCat {{selectedCatalogToAddSubCat.name}}
-	</div>
-	<div ng-if="catToEdit != null">
-		Catalog to edit {{catToEdit.name}}
-	</div> -->
+	<table>
+	<tr>
+	<td>
+		<ul>
+		  <li ng-model="catalogIndex" ng-include="'catalogTree.html'"></li>
+		</ul>
+	</td>
+	<td align="top" valign="top">
+	<span>
+		<!-- <div ng-if="selectedCatalogToAddSubCat != null">
+			Parent catalog to addSubCat {{selectedCatalogToAddSubCat.name}}
+		</div>
+		<div ng-if="catToEdit != null">
+			Catalog to edit {{catToEdit.name}}
+		</div> -->
+		
+		<br>
+		<form>
+			<input type="text" ng-model="catName"  size="30"
+				   placeholder="add cat name here" > <!-- ng-readonly="readonly" -->
+			<br>
+			<input type="text" ng-model="catDes"  size="100"
+				   placeholder="add cat des here">
+			<input ng-if="catalog != rootCatalog" class="btn-primary" type="button" value="Update" ng-click="updateCatalog()">
+			<input class="btn-primary" type="button" value="Add sub cat" ng-click="addSubCatalog()">
+			<input class="btn-primary" type="button" value="Clear" ng-click="clearForm()">
+		</form>
+	</span>
+	</td>
+	</tr>
+	</table>
 	
 	<br>
-	<form>
-		<input type="text" ng-model="catName"  size="30"
-			   placeholder="add cat name here" > <!-- ng-readonly="readonly" -->
-		<br>
-		<input type="text" ng-model="catDes"  size="100"
-			   placeholder="add cat des here">
-		<input ng-if="catalog != rootCatalog" class="btn-primary" type="button" value="Update" ng-click="updateCatalog()">
-		<input class="btn-primary" type="button" value="Add sub cat" ng-click="addSubCatalog()">
-		<input class="btn-primary" type="button" value="Clear" ng-click="clearForm()">
-	</form>
-</span>
-</td>
-</tr>
-</table>
-
-<br>
-
-<!-- catItem form -->
 	
-<!-- <input class="btn-primary" type="button" value="Add new item" ng-click="addCatItem()"> -->
+	<!-- catItem form -->
+		
+	<!-- <input class="btn-primary" type="button" value="Add new item" ng-click="addCatItem()"> -->
+	
+	<div ng-include src=" '/smartpad/partials/catalogItem.html' "></div>
 
-<div ng-include src=" '/smartpad/partials/catalogItem.html' "></div>
+</div>

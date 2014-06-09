@@ -1,11 +1,11 @@
 var loginController = angular.module('loginController', []);
 /*loginController.config(function($httpProvider) {
-	console.log($httpProvider.defaults);
-	delete $httpProvider.defaults.headers.common['X-Requested-With'];	
+	//console.log($httpProvider.defaults);
+	//delete $httpProvider.defaults.headers.common['X-Requested-With'];	
 });*/
 
-loginController.controller('LoginCtrl', ['$scope', '$rootScope','$routeParams', 'User', '$location', 'localStorageService',
-    function($scope, $rootScope, $routeParams, User, $location, localStorageService) {
+loginController.controller('LoginCtrl', ['$scope', '$rootScope','$routeParams', 'User', '$location', 'localStorageService', '$http',
+    function($scope, $rootScope, $routeParams, User, $location, localStorageService, $http) {
     $scope.user = {};
 	$rootScope.user = {};
     $scope.login = function() {		
@@ -20,6 +20,7 @@ loginController.controller('LoginCtrl', ['$scope', '$rootScope','$routeParams', 
 						$rootScope.user = data.data[0];
 						localStorageService.set('user', $rootScope.user);
 						localStorageService.set('userNameText', data.data[0].userNameText);
+						$http.defaults.headers.common['access-token'] = data.data[0].userNameText;
 						$location.path('/defaults');
 						return;
 					}
@@ -28,7 +29,7 @@ loginController.controller('LoginCtrl', ['$scope', '$rootScope','$routeParams', 
                 function(err, headers)
                 {
                 	console.log(err)
-                    alert('Login failed: \'' + err + '\'!');
+                    alert('Login failed: \'' + JSON.stringify(err) + '\'!');
                 });
     }
   }]);

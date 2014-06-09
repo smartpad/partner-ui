@@ -4,8 +4,8 @@
 
 var smartpadApp = angular.module('smartpadApp', [
   'ngRoute',
-  'smartpadControllers', 'loginController', 'catalogItemController', 'sysCatalogItemController',
-  'userServices', 'catalogServices', 'branchServices', 'catalogItemServices',
+  'smartpadControllers', 'loginController', 'registerController', 'catalogItemController', 'sysCatalogItemController',
+  'userServices', 'catalogServices', 'branchServices', 'catalogItemServices', 'registerServices',
   'ui.router'
 ]);
 
@@ -18,7 +18,8 @@ smartpadApp.config(['$stateProvider', '$urlRouterProvider',
     	state("defaults.catalogItem", {
       	url: "/catalogItem",
         templateUrl: 'partials/sysCatalogItem.html',
-  		controller: 'SysCatalogItemCtrl'
+  		//controller: 'SysCatalogItemCtrl'
+		controller: 'CatalogCtrl'
         }).
         
        state("defaults", {
@@ -43,6 +44,12 @@ smartpadApp.config(['$stateProvider', '$urlRouterProvider',
         url: "/login",
         templateUrl: 'partials/login.html',
         controller: 'LoginCtrl'
+        }).
+        
+        state("register", {
+        url: "/register",
+        templateUrl: 'partials/register.html',
+        controller: 'RegisterCtrl'
         }).
         
         state("defaults.catalog", {

@@ -16,8 +16,15 @@ smartpadControllers.controller('RegistryCtrl', ['$scope', '$routeParams', 'User'
 
 smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog', 'CatalogItem', 'localStorageService',
 	function($scope, $rootScope, Catalog, CatalogItem, localStorageService) {
-		$scope.isSysCat = false;
 		$rootScope.user = localStorageService.get('user');
+
+		$scope.init = function(isSysCat) {
+			$scope.isSysCat = isSysCat;
+			// Load catalog info at initial
+			Catalog.get({user: $rootScope.user.userNameText, sys: $scope.isSysCat}, function(catalogResult) {
+				$scope.getCatalogCallBack(catalogResult);
+			});
+		};
 		$scope.clearForm = function() {
 			$scope.catalog = $scope.rootCatalog;
 			$scope.action = null;//null, "addsubcat"
@@ -45,9 +52,7 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			this.clearForm();
 			this.loadSubCatalog($scope.rootCatalog);
 		};
-		Catalog.get({user: $rootScope.user.userNameText}, function(catalogResult) {
-			$scope.getCatalogCallBack(catalogResult);
-		});
+
 		$scope.loadSubCatalog = function(catalog) {
 			/*var paging = {};
 			paging.pageSize = -1;
@@ -57,8 +62,11 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 
 			$scope.catalog = catalog;
 
-			$scope.branchNameDefault = $scope.catalog.branchName;
-			$scope.allFields = $scope.catalog.allFields;
+			if ($scope.isSysCat) {
+				$scope.selectedSysCatId = catalog.id;
+			}
+			$scope.branchNameDefault = catalog.branchName;
+			$scope.allFields = catalog.allFields;
 			$scope.$broadcast('clear-event');
 
 			$scope.catName = catalog.name;
@@ -67,6 +75,10 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			this.pagingItems(1);
 		};
 		$scope.loadSubSysCat = function(subSysCat) {
+			if ($scope.isSysCat) {
+				return;
+			}
+			
 			$scope.selectedSubSys = subSysCat;
 			$scope.branchNameDefault = $scope.selectedSubSys.branchName;
 			$scope.allFields = $scope.selectedSubSys.allFields;
@@ -81,7 +93,7 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 				$scope.paging.pageSize = 2;
 			}
 			$scope.paging.pageNumber = pageNumber;
-			Catalog.getItems({user: $rootScope.user.userNameText, catalogId: $scope.catalog.id, sys: false, pageSize: $scope.paging.pageSize, pageNumber: $scope.paging.pageNumber}, function(catalogItemsResult) {
+			Catalog.getItems({user: $rootScope.user.userNameText, catalogId: $scope.catalog.id, pageSize: $scope.paging.pageSize, pageNumber: $scope.paging.pageNumber}, function(catalogItemsResult) {
 				$scope.catalog.allItems = catalogItemsResult.allItems;
 				$scope.paging = catalogItemsResult.paging;
 				$scope.pageNumbers = [];
@@ -92,12 +104,18 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			});
 		}
 		$scope.selectToAddSubCat = function(parentCatalogOfNewSubCat) {
+			if ($scope.isSysCat) {
+				return;
+			}
 			this.clearForm();
 			$scope.catalog = parentCatalogOfNewSubCat;
 			//$scope.readonly = $scope.catalog == $scope.rootCatalog;
 			$scope.action = "addsubcat";
 		};
 		$scope.updateCatalog = function() {
+			if ($scope.isSysCat) {
+				return;
+			}
 			//var editCat = null;
 			if ($scope.action == null) {
 				$scope.catalog.name = $scope.catName;
@@ -132,11 +150,17 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			}
 		};
 		$scope.addSubCatalog = function() {
+			if ($scope.isSysCat) {
+				return;
+			}
 			//this.selectToAddSubCat($scope.catalog);
 			$scope.action = "addsubcat";
 			this.updateCatalog();
 		};
 		$scope.deleteCat = function(catDelete) {
+			if ($scope.isSysCat) {
+				return;
+			}
 			Catalog.delete({user: $rootScope.user.userNameText, catalogId: catDelete.id},
 				function(dataSuccess) {
 					$scope.getCatalogCallBack(dataSuccess);
