@@ -35,7 +35,12 @@ catalogItemController.controller('CatalogItemCtrl', ['$scope', '$rootScope', 'Ca
 		if ($scope.$parent.selectedSubSys) {
 			subSysCatId = $scope.$parent.selectedSubSys.id;
 		}
-		CatalogItem.save({user: $rootScope.user.userNameText, catalogId: $scope.$parent.catalog.id, 
+		var catalogId = $scope.$parent.catalog.id;
+		if ($scope.$parent.isSysCat) {
+			catalogId = $scope.$parent.selectedSysCatId;
+			subSysCatId = null;
+		}
+		CatalogItem.save({user: $rootScope.user.userNameText, catalogId: catalogId, 
 						sysCatId: subSysCatId/*$scope.$parent.selectedSysCatId*//*, isSysCat: $scope.$parent.isSysCat*/}, 
 				$scope.catalogItem,
 				function(dataSuccess) {

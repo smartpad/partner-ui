@@ -20,6 +20,10 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 
 		$scope.init = function(isSysCat) {
 			$scope.isSysCat = isSysCat;
+			// Load catalog info at initial
+			Catalog.get({user: $rootScope.user.userNameText, sys: $scope.isSysCat}, function(catalogResult) {
+				$scope.getCatalogCallBack(catalogResult);
+			});
 		};
 		$scope.clearForm = function() {
 			$scope.catalog = $scope.rootCatalog;
@@ -48,9 +52,7 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 			this.clearForm();
 			this.loadSubCatalog($scope.rootCatalog);
 		};
-		Catalog.get({user: $rootScope.user.userNameText}, function(catalogResult) {
-			$scope.getCatalogCallBack(catalogResult);
-		});
+
 		$scope.loadSubCatalog = function(catalog) {
 			/*var paging = {};
 			paging.pageSize = -1;
@@ -60,8 +62,11 @@ smartpadControllers.controller('CatalogCtrl', ['$scope', '$rootScope', 'Catalog'
 
 			$scope.catalog = catalog;
 
-			$scope.branchNameDefault = $scope.catalog.branchName;
-			$scope.allFields = $scope.catalog.allFields;
+			if ($scope.isSysCat) {
+				$scope.selectedSysCatId = catalog.id;
+			}
+			$scope.branchNameDefault = catalog.branchName;
+			$scope.allFields = catalog.allFields;
 			$scope.$broadcast('clear-event');
 
 			$scope.catName = catalog.name;

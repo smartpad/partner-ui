@@ -1,7 +1,7 @@
 <script type="text/ng-template" id="sysCatTree.html">
 	<span
 	ng-style="selectedSysCatId == catalogIndex.id && selectedSysCatId.length == catalogIndex.id.length && {'background-color': 'red'}"
-	ng-click="changeSelectSysCat(catalogIndex)"
+	ng-click="loadSubCatalog(catalogIndex)"
 	>
 		<input class="btn-primary" type="radio"
 			ng-model="selectedSysCatId"

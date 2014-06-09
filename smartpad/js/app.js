@@ -18,7 +18,8 @@ smartpadApp.config(['$stateProvider', '$urlRouterProvider',
     	state("defaults.catalogItem", {
       	url: "/catalogItem",
         templateUrl: 'partials/sysCatalogItem.html',
-  		controller: 'SysCatalogItemCtrl'
+  		//controller: 'SysCatalogItemCtrl'
+		controller: 'CatalogCtrl'
         }).
         
        state("defaults", {
